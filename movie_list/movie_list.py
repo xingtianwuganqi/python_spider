@@ -1,13 +1,17 @@
 import requests
 import lxml.etree as etree
+import re
 
 class movie_list():
 
     def __init__(self):
         self.url = 'http://www.beiwo888.com/list/1/'
+        self.baseUrl = 'http://www.beiwo888.com'
+        self.testUrl = 'http://www.beiwo888.com/list/8'
 
-    def networking(self):
-        response = requests.get(self.url)
+    def networking(self,url):
+        response = requests.get(url)
+        response.encoding="utf-8"
         if response.status_code == 200:
             return response.text
         else:
@@ -23,9 +27,37 @@ class movie_list():
             dic[hot.text] = hot.attrib["href"]
         return dic
 
+    def getPageNum(self,text):
+        selector = etree.HTML(text)
+        page_texts = selector.xpath('//div[@id="pages"]/text()')
+        if len(page_texts) > 0:
+            page_text = page_texts[0]
+            result = re.search('^共.*:1/(.*)页',page_text,re.S)
+            return result.group(1)
+        else:
+            return None
+
+
+    def movieList(self,text):
+        # 根据电源类型获取电源列表
+        # print(text)
+        pages = self.getPageNum(text)
+        print(pages,type(pages))
+        if int(pages) > 0:
+            selector = etree.HTML(text)
+            movie_list = selector.xpath('//div[@class="movielist"]/ul[@class="img-list clearfix"]/li/a[@class="play-img"]/img/@alt')
+            print(movie_list)
+
+
 
 if __name__ == '__main__':
     movies = movie_list()
-    text = movies.networking()
-    dic = movies.hotType(text)
-    print(dic)
+    # text = movies.networking(movies.url)
+    #     # # 类型列表
+    #     # dic = movies.hotType(text)
+    #     # print(dic)
+    text = movies.networking(movies.testUrl)
+    movies.movieList(text)
+
+
+
