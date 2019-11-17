@@ -45,8 +45,23 @@ class movie_list():
         print(pages,type(pages))
         if int(pages) > 0:
             selector = etree.HTML(text)
-            movie_list = selector.xpath('//div[@class="movielist"]/ul[@class="img-list clearfix"]/li/a[@class="play-img"]/img/@alt')
+            movie_list = selector.xpath('//div[@class="movielist"]/ul[@class="img-list clearfix"]/li')#/a[@class="play-img"]/img/@alt
             print(movie_list)
+            for movie in movie_list:
+                print(movie)
+                movie_name = movie.xpath('./h5/a/text()')[0]
+                movie_url  = movie.xpath('./h5/a/@href')[0]
+                actor = movie.xpath('./p')[0].xpath('./a/text()')
+                movie_actor = "，".join(map(lambda x: str(x),actor))
+                movie_star = movie.xpath('./p[@class="star"]/em/text()')
+                print(movie_name,movie_url,movie_actor,movie_star)[0]
+                yield {
+                    "movie_name": movie_name,
+                    "movie_url" : movie_url,
+                    "movie_actor" : movie_actor,
+                    "movie_star" : movie_star
+                }
+
 
 
 
