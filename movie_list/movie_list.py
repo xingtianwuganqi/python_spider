@@ -1,6 +1,7 @@
 import requests
 import lxml.etree as etree
 import re
+import pymysql
 
 class movie_list():
 
@@ -8,6 +9,8 @@ class movie_list():
         self.url = 'http://www.beiwo888.com/list/1/'
         self.baseUrl = 'http://www.beiwo888.com'
         self.testUrl = 'http://www.beiwo888.com/list/8'
+        self.db = pymysql.connect(host='localhost',user='root',password='qwe123',port=3306,db='spiders')
+        self.cursor = self.db.cursor()
 
     def networking(self,url):
         response = requests.get(url)
@@ -53,8 +56,7 @@ class movie_list():
                 movie_url  = movie.xpath('./h5/a/@href')[0]
                 actor = movie.xpath('./p')[0].xpath('./a/text()')
                 movie_actor = "，".join(map(lambda x: str(x),actor))
-                movie_star = movie.xpath('./p[@class="star"]/em/text()')
-                print(movie_name,movie_url,movie_actor,movie_star)[0]
+                movie_star = movie.xpath('./p[@class="star"]/em/text()')[0]
                 yield {
                     "movie_name": movie_name,
                     "movie_url" : movie_url,
@@ -62,17 +64,26 @@ class movie_list():
                     "movie_star" : movie_star
                 }
 
-
+    def create_mysql_list(self):
+        self.cursor.execute("SELECT VERSION()")
+        data = self.cursor.fetchone()
+        print("database verison",data)
+        sql = 'CREATE TABLE IF NOT EXISTS students (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, age INT NOT NULL, PRIMARY KEY (id ))'
+        self.db.close()
 
 
 if __name__ == '__main__':
     movies = movie_list()
-    # text = movies.networking(movies.url)
-    #     # # 类型列表
-    #     # dic = movies.hotType(text)
-    #     # print(dic)
+    movies.create_mysql_list()
+    # types_text = movies.networking(movies.url)
+    # # 类型列表
+    # type_dic = movies.hotType(types_text)
+    # 根据种类建表
+
     text = movies.networking(movies.testUrl)
-    movies.movieList(text)
+    dic = movies.movieList(text)
+    for i in dic:
+        print(i)
 
 
 
