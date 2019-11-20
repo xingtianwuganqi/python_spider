@@ -45,13 +45,10 @@ class movie_list():
         # 根据电源类型获取电源列表
         # print(text)
         pages = self.getPageNum(text)
-        print(pages,type(pages))
         if int(pages) > 0:
             selector = etree.HTML(text)
             movie_list = selector.xpath('//div[@class="movielist"]/ul[@class="img-list clearfix"]/li')#/a[@class="play-img"]/img/@alt
-            print(movie_list)
             for movie in movie_list:
-                print(movie)
                 movie_name = movie.xpath('./h5/a/text()')[0]
                 movie_url  = movie.xpath('./h5/a/@href')[0]
                 actor = movie.xpath('./p')[0].xpath('./a/text()')
@@ -65,12 +62,31 @@ class movie_list():
                 }
 
     def create_mysql_list(self,table_name):
-        sql = 'CREATE TABLE IF NOT EXISTS ' + table_name
+        sql ="""CREATE TABLE IF NOT EXISTS %s (
+        movie_name VARCHAR(255) NOT NULL,
+        movie_url VARCHAR(255) NOT NULL,
+        movie_actor VARCHAR(255) NOT NULL,
+        movie_star VARCHAR(255) NOT NULL,
+        PRIMARY KEY (movie_name))"""%table_name
         self.cursor.execute(sql)
 
     def getpingyin(self,text):
         pinyin = self.p.get_pinyin(text,splitter='')
         return pinyin
+
+    def insert_data(self,dic):
+        # for key,value in dic.items():
+        sql = 'INSERT INTO dongzuopian (movie_name,movie_url,movie_actor,movie_star) VALUES (%s,%s,%s,%s)'%(str(dic["movie_name"]),str(dic["movie_url"]),str(dic["movie_actor"]),str(dic["movie_star"]))
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            print("success")
+        except:
+            self.db.rollback()
+            print("error")
+
+
 
 
 if __name__ == '__main__':
@@ -83,13 +99,13 @@ if __name__ == '__main__':
     for key,value in type_dic.items():
         table_name = movies.getpingyin(key)
         print(table_name)
-        movies.create_mysql_list(table_name)
+        # movies.create_mysql_list(table_name)
 
-
-    # text = movies.networking(movies.testUrl)
-    # dic = movies.movieList(text)
-    # for i in dic:
-    #     print(i)
+    text = movies.networking(movies.testUrl)
+    dic = movies.movieList(text)
+    for i in dic:
+        print(i)
+        movies.insert_data(i)
 
 
 
