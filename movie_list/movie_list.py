@@ -2,6 +2,7 @@ import requests
 import lxml.etree as etree
 import re
 import pymysql
+from xpinyin import Pinyin
 
 class movie_list():
 
@@ -11,6 +12,7 @@ class movie_list():
         self.testUrl = 'http://www.beiwo888.com/list/8'
         self.db = pymysql.connect(host='localhost',user='root',password='qwe123',port=3306,db='spiders')
         self.cursor = self.db.cursor()
+        self.p = Pinyin()
 
     def networking(self,url):
         response = requests.get(url)
@@ -23,10 +25,8 @@ class movie_list():
         # 使用xpath 对文本进行解析
         selector = etree.HTML(text)
         hotTypes = selector.xpath('//body[@class="channel15"]/div[@id="header"]/div[@id="menu"]/p[@class="s"]/a')
-        print(hotTypes)
         dic = {}
         for hot in hotTypes:
-            print(hot.tag,hot.attrib["href"],hot.text)
             dic[hot.text] = hot.attrib["href"]
         return dic
 
@@ -64,26 +64,32 @@ class movie_list():
                     "movie_star" : movie_star
                 }
 
-    def create_mysql_list(self):
-        self.cursor.execute("SELECT VERSION()")
-        data = self.cursor.fetchone()
-        print("database verison",data)
-        sql = 'CREATE TABLE IF NOT EXISTS students (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, age INT NOT NULL, PRIMARY KEY (id ))'
-        self.db.close()
+    def create_mysql_list(self,table_name):
+        sql = 'CREATE TABLE IF NOT EXISTS ' + table_name
+        self.cursor.execute(sql)
+
+    def getpingyin(self,text):
+        pinyin = self.p.get_pinyin(text,splitter='')
+        return pinyin
 
 
 if __name__ == '__main__':
     movies = movie_list()
-    movies.create_mysql_list()
-    # types_text = movies.networking(movies.url)
+    types_text = movies.networking(movies.url)
     # # 类型列表
-    # type_dic = movies.hotType(types_text)
+    type_dic = movies.hotType(types_text)
+    print(type_dic)
     # 根据种类建表
+    for key,value in type_dic.items():
+        table_name = movies.getpingyin(key)
+        print(table_name)
+        movies.create_mysql_list(table_name)
 
-    text = movies.networking(movies.testUrl)
-    dic = movies.movieList(text)
-    for i in dic:
-        print(i)
+
+    # text = movies.networking(movies.testUrl)
+    # dic = movies.movieList(text)
+    # for i in dic:
+    #     print(i)
 
 
 
