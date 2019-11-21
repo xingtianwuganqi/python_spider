@@ -10,7 +10,7 @@ class movie_list():
         self.url = 'http://www.beiwo888.com/list/1/'
         self.baseUrl = 'http://www.beiwo888.com'
         self.testUrl = 'http://www.beiwo888.com/list/8'
-        self.db = pymysql.connect(host='localhost',user='root',password='qwe123',port=3306,db='spiders')
+        self.db = pymysql.connect(host='localhost',user='root',password='qwe123',port=3306,db='spiders',charset='utf8')
         self.cursor = self.db.cursor()
         self.p = Pinyin()
 
@@ -52,7 +52,7 @@ class movie_list():
                 movie_name = movie.xpath('./h5/a/text()')[0]
                 movie_url  = movie.xpath('./h5/a/@href')[0]
                 actor = movie.xpath('./p')[0].xpath('./a/text()')
-                movie_actor = "，".join(map(lambda x: str(x),actor))
+                movie_actor = "/".join(map(lambda x: str(x),actor))
                 movie_star = movie.xpath('./p[@class="star"]/em/text()')[0]
                 yield {
                     "movie_name": movie_name,
@@ -70,19 +70,26 @@ class movie_list():
         PRIMARY KEY (movie_name))"""%table_name
         self.cursor.execute(sql)
 
+    def drop_table(self,table_name):
+        sql = """
+            drop table %s        
+        """%table_name
+        self.cursor.execute(sql)
+
     def getpingyin(self,text):
         pinyin = self.p.get_pinyin(text,splitter='')
         return pinyin
 
     def insert_data(self,dic):
         # for key,value in dic.items():
-        sql = 'INSERT INTO dongzuopian (movie_name,movie_url,movie_actor,movie_star) VALUES (%s,%s,%s,%s)'%(str(dic["movie_name"]),str(dic["movie_url"]),str(dic["movie_actor"]),str(dic["movie_star"]))
+        sql = 'insert into dongzuopian (movie_name,movie_url,movie_actor,movie_star) VALUES (%s,%s,%s,%s)'
         print(sql)
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql,(str('%s')%dic["movie_name"],str('%s')%dic["movie_url"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_star"]))
             self.db.commit()
             print("success")
-        except:
+        except  Exception as e:
+            print(str(e))
             self.db.rollback()
             print("error")
 
@@ -100,6 +107,7 @@ if __name__ == '__main__':
         table_name = movies.getpingyin(key)
         print(table_name)
         # movies.create_mysql_list(table_name)
+        # movies.drop_table(table_name)
 
     text = movies.networking(movies.testUrl)
     dic = movies.movieList(text)
