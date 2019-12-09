@@ -10,6 +10,7 @@ class movie_list():
         self.url = 'http://www.beiwo888.com/list/1/'
         self.baseUrl = 'http://www.beiwo888.com'
         self.testUrl = 'http://www.beiwo888.com/list/8'
+        self.detail_text_url = 'http://www.beiwo888.com/vod/41119/'
         self.db = pymysql.connect(host='localhost',user='root',password='qwe123',port=3306,db='spiders',charset='utf8')
         self.cursor = self.db.cursor()
         self.p = Pinyin()
@@ -21,6 +22,7 @@ class movie_list():
             return response.text
         else:
             return None
+
     def hotType(self,text):
         # 使用xpath 对文本进行解析
         selector = etree.HTML(text)
@@ -65,23 +67,29 @@ class movie_list():
                 actor = movie.xpath('./p')[0].xpath('./a/text()')
                 movie_actor = "/".join(map(lambda x: str(x),actor))
                 movie_star = movie.xpath('./p[@class="star"]/em/text()')[0]
+                movie_img  = movie.xpath('./a[@class="play-img"]/img/@src')[0]
                 yield {
                     "movie_type": type,
                     "movie_name": movie_name,
                     "movie_url" : movie_url,
+                    "movie_img" : movie_img,
                     "movie_actor" : movie_actor,
                     "movie_star" : movie_star
                 }
 
-
-
-
+    def detail_text(self,text):
+        select = etree.HTML(text)
+        movie_detail = select.xpath('//div[@class="wrap"]/div[@id="main"]/div[@id="main"]/div[@class="endpage clearfix"]')[0]
+        movie_detail_img = movie_detail.xpath('./div[@class="l"]/div[@class="pic"]/img/@src')[0]
+        movie_detail_name = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/h1/text()')[0]
+        # movie_detail_year =
 
     def create_mysql_list(self,table_name):
         sql ="""CREATE TABLE IF NOT EXISTS %s (
         movie_type VARCHAR(255) NOT NULL,
         movie_name VARCHAR(255) NOT NULL,
         movie_url VARCHAR(255) NOT NULL,
+        movie_img VARCHAR(255) NOT NULL,
         movie_actor VARCHAR(255) NOT NULL,
         movie_star VARCHAR(255) NOT NULL,
         PRIMARY KEY (movie_name))"""%table_name
@@ -101,10 +109,10 @@ class movie_list():
         # for key,value in dic.items():
         key = dic["movie_type"]
         list_name = self.getpingyin(key)
-        sql = 'insert into {} (movie_type,movie_name,movie_url,movie_actor,movie_star) VALUES (%s,%s,%s,%s,%s)'.format(list_name)
+        sql = 'insert into {} (movie_type,movie_name,movie_url,movie_img,movie_actor,movie_star) VALUES (%s,%s,%s,%s,%s,%s)'.format(list_name)
         print(sql)
         try:
-            self.cursor.execute(sql,(str('%s')%dic["movie_type"],str('%s')%dic["movie_name"],str('%s')%dic["movie_url"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_star"]))
+            self.cursor.execute(sql,(str('%s')%dic["movie_type"],str('%s')%dic["movie_name"],str('%s')%dic["movie_url"],str('%s')%dic["movie_img"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_star"]))
             self.db.commit()
             print("success")
         except  Exception as e:
@@ -128,11 +136,20 @@ if __name__ == '__main__':
     #     movies.create_mysql_list(table_name)
         # movies.drop_table(table_name)
 
-    text = movies.networking(movies.testUrl)
-    dic = movies.movieList(text)
-    for i in dic:
-        print(i)
-        movies.insert_data(i)
+    # text = movies.networking(movies.testUrl)
+    # dic = movies.movieList(text)
+    # for i in dic:
+    #     print(i)
+    #     # http://www.beiwo888.com/vod/40997/
+    #     if len(i['movie_url']) > 0:
+    #         detail_url = movies.baseUrl + i['movie_url']
+    #         detail_text = movies.networking(detail_url)
+
+        # movies.insert_data(i)
+
+    text = movies.networking(movies.detail_text_url)
+    movies.detail_text(text)
+
 
 
 
