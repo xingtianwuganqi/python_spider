@@ -40,11 +40,22 @@ class movie_list():
         else:
             return None
 
+    def movieListType(self, text):
+        selector = etree.HTML(text)
+        type_texts = selector.xpath('//div[@class="filter"]/div[@class="title"]/b/text()')
+        if len(type_texts) > 0:
+            type_text = type_texts[0]
+            type = re.search('(.*)分类筛选',type_text,re.S)
+            return type.group(1)
+        else:
+            return None
+
 
     def movieList(self,text):
         # 根据电源类型获取电源列表
         # print(text)
         pages = self.getPageNum(text)
+        type = self.movieListType(text)
         if int(pages) > 0:
             selector = etree.HTML(text)
             movie_list = selector.xpath('//div[@class="movielist"]/ul[@class="img-list clearfix"]/li')#/a[@class="play-img"]/img/@alt
@@ -55,14 +66,20 @@ class movie_list():
                 movie_actor = "/".join(map(lambda x: str(x),actor))
                 movie_star = movie.xpath('./p[@class="star"]/em/text()')[0]
                 yield {
+                    "movie_type": type,
                     "movie_name": movie_name,
                     "movie_url" : movie_url,
                     "movie_actor" : movie_actor,
                     "movie_star" : movie_star
                 }
 
+
+
+
+
     def create_mysql_list(self,table_name):
         sql ="""CREATE TABLE IF NOT EXISTS %s (
+        movie_type VARCHAR(255) NOT NULL,
         movie_name VARCHAR(255) NOT NULL,
         movie_url VARCHAR(255) NOT NULL,
         movie_actor VARCHAR(255) NOT NULL,
@@ -82,10 +99,12 @@ class movie_list():
 
     def insert_data(self,dic):
         # for key,value in dic.items():
-        sql = 'insert into dongzuopian (movie_name,movie_url,movie_actor,movie_star) VALUES (%s,%s,%s,%s)'
+        key = dic["movie_type"]
+        list_name = self.getpingyin(key)
+        sql = 'insert into {} (movie_type,movie_name,movie_url,movie_actor,movie_star) VALUES (%s,%s,%s,%s,%s)'.format(list_name)
         print(sql)
         try:
-            self.cursor.execute(sql,(str('%s')%dic["movie_name"],str('%s')%dic["movie_url"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_star"]))
+            self.cursor.execute(sql,(str('%s')%dic["movie_type"],str('%s')%dic["movie_name"],str('%s')%dic["movie_url"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_star"]))
             self.db.commit()
             print("success")
         except  Exception as e:
@@ -103,10 +122,10 @@ if __name__ == '__main__':
     type_dic = movies.hotType(types_text)
     print(type_dic)
     # 根据种类建表
-    for key,value in type_dic.items():
-        table_name = movies.getpingyin(key)
-        print(table_name)
-        # movies.create_mysql_list(table_name)
+    # for key,value in type_dic.items():
+    #     table_name = movies.getpingyin(key)
+    #     print(table_name)
+    #     movies.create_mysql_list(table_name)
         # movies.drop_table(table_name)
 
     text = movies.networking(movies.testUrl)
