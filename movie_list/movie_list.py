@@ -90,7 +90,7 @@ class movie_list():
                 print(i.xpath('./text()'))
         movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
         movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
-        movie_detail_downloads = 
+        # movie_detail_downloads =
         print(movie_detail_star,movie_detail_star_line)
 
 
