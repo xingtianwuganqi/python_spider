@@ -82,7 +82,17 @@ class movie_list():
         movie_detail = select.xpath('//div[@class="wrap"]/div[@id="main"]/div[@id="main"]/div[@class="endpage clearfix"]')[0]
         movie_detail_img = movie_detail.xpath('./div[@class="l"]/div[@class="pic"]/img/@src')[0]
         movie_detail_name = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/h1/text()')[0]
-        # movie_detail_year =
+        movie_detail_year = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/ul')[0]
+        for i in movie_detail_year:
+            if len(i.xpath('./a/text()')) > 0:
+                print(i.xpath('./a/text()'))
+            else:
+                print(i.xpath('./text()'))
+        movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
+        movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
+        movie_detail_downloads = 
+        print(movie_detail_star,movie_detail_star_line)
+
 
     def create_mysql_list(self,table_name):
         sql ="""CREATE TABLE IF NOT EXISTS %s (
