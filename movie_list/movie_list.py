@@ -87,11 +87,16 @@ class movie_list():
             if len(i.xpath('./a/text()')) > 0:
                 print(i.xpath('./a/text()'))
             else:
-                print(i.xpath('./text()'))
+                print(i.xpath('./text()')[0])
         movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
         movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
-        # movie_detail_downloads =
-        print(movie_detail_star,movie_detail_star_line)
+        movie_detail_downloads = movie_detail.xpath('./div[@class="mox"]')
+        movie_down_list = movie_detail_downloads[-1]
+        lists = movie_down_list.xpath('./div[@class="downlist"]/ul/script/text()')[0]
+        results = re.search('var.*?"(.*)".*?', lists, re.S)
+        movie_list_str = results.group(1)
+        movie_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
+        print(movie_list_desc)
 
 
     def create_mysql_list(self,table_name):
