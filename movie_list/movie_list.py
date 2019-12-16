@@ -3,6 +3,8 @@ import lxml.etree as etree
 import re
 import pymysql
 from xpinyin import Pinyin
+import time
+
 
 class movie_list():
 
@@ -56,7 +58,8 @@ class movie_list():
     def movieList(self,text):
         # 根据电源类型获取电源列表
         # print(text)
-        pages = self.getPageNum(text)
+        # pages = self.getPageNum(text)
+        pages = 2
         type = self.movieListType(text)
         if int(pages) > 0:
             selector = etree.HTML(text)
@@ -83,11 +86,15 @@ class movie_list():
         movie_detail_img = movie_detail.xpath('./div[@class="l"]/div[@class="pic"]/img/@src')[0]
         movie_detail_name = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/h1/text()')[0]
         movie_detail_year = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/ul')[0]
+        movie_actor = ""
+        movie_other_info = ""
         for i in movie_detail_year:
             if len(i.xpath('./a/text()')) > 0:
-                print(i.xpath('./a/text()'))
+                actors = i.xpath('./a/text()')
+                movie_actor = ",".join(actors)
             else:
-                print(i.xpath('./text()')[0])
+                other_info = i.xpath('./text()')[0]
+                movie_other_info += other_info
         movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
         movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
         movie_detail_downloads = movie_detail.xpath('./div[@class="mox"]')
@@ -95,8 +102,21 @@ class movie_list():
         lists = movie_down_list.xpath('./div[@class="downlist"]/ul/script/text()')[0]
         results = re.search('var.*?"(.*)".*?', lists, re.S)
         movie_list_str = results.group(1)
-        movie_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
-        print(movie_list_desc)
+        movie_list_desc = ""
+        if len(movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')) > 0:
+            movies_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
+        return {
+            "movie_detail_img" : movie_detail_img,
+            "movie_detail_name" : movie_detail_name,
+            "movie_detail_year" : movie_detail_year,
+            "movie_actor" : movie_actor,
+            "movie_other_info" : movie_other_info,
+            "movie_detail_star": movie_detail_star,
+            "movie_detail_star_line": movie_detail_star_line,
+            "movie_list_str": movie_list_str,
+            "movie_list_desc" : movie_list_desc
+        }
+
 
 
     def create_mysql_list(self,table_name):
@@ -108,6 +128,20 @@ class movie_list():
         movie_actor VARCHAR(255) NOT NULL,
         movie_star VARCHAR(255) NOT NULL,
         PRIMARY KEY (movie_name))"""%table_name
+        self.cursor.execute(sql)
+
+    def create_movie_detail_list(self):
+        sql = """CREATE TABLE IF NOT EXISTS moviedetails (
+                movie_detail_img VARCHAR(255) NOT NULL,
+                movie_detail_name VARCHAR(255) NOT NULL,
+                movie_detail_year VARCHAR(255) NOT NULL,
+                movie_actor VARCHAR(255) NOT NULL,
+                movie_other_info VARCHAR(255) NOT NULL,
+                movie_detail_star VARCHAR(255) NOT NULL,
+                movie_detail_star_line VARCHAR(255) NOT NULL,
+                movie_list_str VARCHAR(1000) NOT NULL,
+                movie_list_desc VARCHAR(255) NOT NULL,
+                PRIMARY KEY (movie_detail_name))"""
         self.cursor.execute(sql)
 
     def drop_table(self,table_name):
@@ -135,6 +169,18 @@ class movie_list():
             self.db.rollback()
             print("error")
 
+    def insert_detail_data(self,dic):
+
+        sql = 'insert into moviedetails (movie_detail_img,movie_detail_name,movie_detail_year,movie_actor,movie_other_info,movie_detail_star,movie_detail_star_line,movie_list_str,movie_list_desc) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+        print(sql)
+        try:
+            self.cursor.execute(sql,(str('%s')%dic["movie_detail_img"],str('%s')%dic["movie_detail_name"],str('%s')%dic["movie_detail_year"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_other_info"],str('%s')%dic["movie_detail_star"],str('%s')%dic["movie_detail_star_line"],str('%s')%dic["movie_list_str"],str('%s')%dic["movie_list_desc"]))
+            self.db.commit()
+            print("success")
+        except  Exception as e:
+            print(str(e))
+            self.db.rollback()
+            print("error")
 
 
 
@@ -142,8 +188,9 @@ if __name__ == '__main__':
     movies = movie_list()
     types_text = movies.networking(movies.url)
     # # 类型列表
-    type_dic = movies.hotType(types_text)
-    print(type_dic)
+    # type_dic = movies.hotType(types_text)
+    # print(type_dic)
+    # movies.create_movie_detail_list()
     # 根据种类建表
     # for key,value in type_dic.items():
     #     table_name = movies.getpingyin(key)
@@ -162,8 +209,22 @@ if __name__ == '__main__':
 
         # movies.insert_data(i)
 
-    text = movies.networking(movies.detail_text_url)
-    movies.detail_text(text)
+    # text = movies.networking(movies.detail_text_url)
+    # movies.detail_text(text)
+    urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html","http://www.beiwo888.com/list/8/index-4.html"]
+    for url in urls:
+        text = movies.networking(url)
+        dic = movies.movieList(text)
+        for i in dic:
+            movies.insert_data(i)
+            time.sleep(1)
+            if len(i["movie_url"]) > 0 :
+                detail_url = movies.baseUrl + i['movie_url']
+                detail_text = movies.networking(detail_url)
+                detail_dic = movies.detail_text(detail_text)
+                movies.insert_detail_data(detail_dic)
+                time.sleep(1)
+
 
 
 
