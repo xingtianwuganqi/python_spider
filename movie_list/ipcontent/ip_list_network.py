@@ -1,12 +1,13 @@
 import requests
 import lxml.etree as etree
 import re
-
+from RedisClient import RedisClient
 
 class IPNetWorking():
     def __init__(self):
         self.url = "http://www.66ip.cn/1.html"
         self.baseUrl = 'http://www.66ip.cn/'
+        self.redis = RedisClient()
 
     def networking(self,url):
         response = requests.get(url)
@@ -55,3 +56,6 @@ if __name__ == "__main__":
     ips = net.get_ip_list(text)
     for ip in ips:
         print(ip)
+        proxy = ip["ip"] + ":" + ip["port"]
+        print(proxy)
+        net.redis.add(proxy)
