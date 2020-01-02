@@ -4,6 +4,7 @@ import re
 import pymysql
 from xpinyin import Pinyin
 import time
+from ipcontent.ip_list import Scheduler
 
 
 class movie_list():
@@ -16,14 +17,23 @@ class movie_list():
         self.db = pymysql.connect(host='localhost',user='root',password='qwe123',port=3306,db='spiders',charset='utf8')
         self.cursor = self.db.cursor()
         self.p = Pinyin()
+        self.Scheduler = Scheduler()
+        # self.Scheduler.run()
 
     def networking(self,url):
-        response = requests.get(url)
-        response.encoding="utf-8"
-        if response.status_code == 200:
-            return response.text
-        else:
-            return None
+
+        proxy = self.Scheduler.get_proxy()
+        proxies = {
+            "http": "http://" + proxy,
+            "https": "https://" + proxy
+        }
+        if len(proxy) > 0:
+            response = requests.get(url,proxies = proxies)
+            response.encoding="utf-8"
+            if response.status_code == 200:
+                return response.text
+            else:
+                return None
 
     def hotType(self,text):
         # 使用xpath 对文本进行解析
@@ -211,7 +221,7 @@ if __name__ == '__main__':
 
     # text = movies.networking(movies.detail_text_url)
     # movies.detail_text(text)
-    urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html","http://www.beiwo888.com/list/8/index-4.html"]
+    urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html"]
     for url in urls:
         text = movies.networking(url)
         dic = movies.movieList(text)

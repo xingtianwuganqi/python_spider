@@ -1,7 +1,7 @@
 import requests
 import lxml.etree as etree
 import re
-from RedisClient import RedisClient
+from ipcontent.RedisClient import RedisClient
 
 class IPNetWorking():
     def __init__(self):
@@ -45,17 +45,24 @@ class IPNetWorking():
         count = page.xpath('./text()')[0]
         return count
 
+    def save_list(self,ips):
+        for ip in ips:
+            proxy = ip["ip"] + ":" + ip["port"]
+            print(proxy)
+            if not self.redis.exists(proxy):
+                self.redis.add(proxy)
+            else:
+                print("代理已存在")
 
+    def main(self):
+        page = self.get_page()
+        print(page)
+        if int(page) > 10:
+            for i in range(1,11):
+                text = self.networking(self.baseUrl + str(i) + ".html")
+                ips = self.get_ip_list(text)
+                self.save_list(ips)
 
 if __name__ == "__main__":
     net = IPNetWorking()
-    totalPage = net.get_page()
-    print(totalPage)
-
-    text = net.networking(net.url)
-    ips = net.get_ip_list(text)
-    for ip in ips:
-        print(ip)
-        proxy = ip["ip"] + ":" + ip["port"]
-        print(proxy)
-        net.redis.add(proxy)
+    net.main()
