@@ -9,7 +9,7 @@ API_PORT = 5000
 
 from multiprocessing import Process
 from ipcontent.Flask_test import app
-from ipcontent.ip_list_network import IPNetWorking
+from ipcontent.ip_list_network import Getter
 from ipcontent.RedisClient import RedisClient
 from ipcontent.Tester import Tester
 import time
@@ -20,9 +20,9 @@ PROXY_POOL_URL = 'http://localhost:5000/random'
 
 class Scheduler():
     def scheduler_getter(self,cycle = GETTER_CYCLE):
-        getter = IPNetWorking()
+        getter = Getter()
         while True:
-            getter.main()
+            getter.run()
             time.sleep(5)
 
     def scheduler_test(self,cycle = TESTER_CYCLE):
