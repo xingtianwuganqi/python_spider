@@ -18,26 +18,37 @@ class movie_list():
         self.cursor = self.db.cursor()
         self.p = Pinyin()
         self.Scheduler = Scheduler()
+        self.proxy = ""
+        self.proxy = self.Scheduler.get_proxy()
+
         # self.Scheduler.run()
 
     def networking(self,url):
 
-        proxy = self.Scheduler.get_proxy()
+        # proxy = "91.201.240.243:8080"
+        print("Proxy:",self.proxy)
         proxies = {
-            "http": "http://" + proxy,
-            "https": "https://" + proxy
+            "http": "http://" + self.proxy,
+            # "https": "https://" + proxy
         }
-        if len(proxy) > 0:
-            response = requests.get(url,proxies = proxies)
-            response.encoding="utf-8"
-            if response.status_code == 200:
-                return response.text
-            else:
-                return None
+        if len(self.proxy) > 0:
+            try:
+                response = requests.get(url,proxies = proxies,timeout = 20)
+                response.encoding="utf-8"
+                if response.status_code == 200:
+                    # print(response.text)
+                    return response.text
+                else:
+                    return None
+            except Exception as e:
+                print("网络请求失败：",e.args)
+                self.proxy = self.Scheduler.get_proxy()
+                self.networking(url)
+
 
     def hotType(self,text):
         # 使用xpath 对文本进行解析
-        selector = etree.HTML(text)
+        selector = etree.HTML(str(text))
         hotTypes = selector.xpath('//body[@class="channel15"]/div[@id="header"]/div[@id="menu"]/p[@class="s"]/a')
         dic = {}
         for hot in hotTypes:
@@ -45,7 +56,7 @@ class movie_list():
         return dic
 
     def getPageNum(self,text):
-        selector = etree.HTML(text)
+        selector = etree.HTML(str(text))
         page_texts = selector.xpath('//div[@id="pages"]/text()')
         if len(page_texts) > 0:
             page_text = page_texts[0]
@@ -55,7 +66,7 @@ class movie_list():
             return None
 
     def movieListType(self, text):
-        selector = etree.HTML(text)
+        selector = etree.HTML(str(text))
         type_texts = selector.xpath('//div[@class="filter"]/div[@class="title"]/b/text()')
         if len(type_texts) > 0:
             type_text = type_texts[0]
@@ -72,7 +83,7 @@ class movie_list():
         pages = 2
         type = self.movieListType(text)
         if int(pages) > 0:
-            selector = etree.HTML(text)
+            selector = etree.HTML(str(text))
             movie_list = selector.xpath('//div[@class="movielist"]/ul[@class="img-list clearfix"]/li')#/a[@class="play-img"]/img/@alt
             for movie in movie_list:
                 movie_name = movie.xpath('./h5/a/text()')[0]
@@ -91,7 +102,7 @@ class movie_list():
                 }
 
     def detail_text(self,text):
-        select = etree.HTML(text)
+        select = etree.HTML(str(text))
         movie_detail = select.xpath('//div[@class="wrap"]/div[@id="main"]/div[@id="main"]/div[@class="endpage clearfix"]')[0]
         movie_detail_img = movie_detail.xpath('./div[@class="l"]/div[@class="pic"]/img/@src')[0]
         movie_detail_name = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/h1/text()')[0]
@@ -196,17 +207,18 @@ class movie_list():
 
 if __name__ == '__main__':
     movies = movie_list()
-    types_text = movies.networking(movies.url)
-    # # 类型列表
+
+    # types_text = movies.networking(movies.url)
+    # 类型列表
     # type_dic = movies.hotType(types_text)
     # print(type_dic)
     # movies.create_movie_detail_list()
-    # 根据种类建表
+    # # 根据种类建表
     # for key,value in type_dic.items():
     #     table_name = movies.getpingyin(key)
     #     print(table_name)
     #     movies.create_mysql_list(table_name)
-        # movies.drop_table(table_name)
+    #     # movies.drop_table(table_name)
 
     # text = movies.networking(movies.testUrl)
     # dic = movies.movieList(text)
@@ -221,6 +233,7 @@ if __name__ == '__main__':
 
     # text = movies.networking(movies.detail_text_url)
     # movies.detail_text(text)
+
     urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html"]
     for url in urls:
         text = movies.networking(url)

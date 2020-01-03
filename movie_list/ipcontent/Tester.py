@@ -1,5 +1,5 @@
 VALID_STATUS_CODES = [200]
-TEST_URL = "http://www.beiwo888.com"
+TEST_URL = "http://www.beiwo888.com/list/1/"
 BATCH_TEST_SIZE = 20
 
 import asyncio
@@ -27,7 +27,7 @@ class Tester():
                 async with session.get(TEST_URL,proxy = real_proxy,timeout = 15) as response:
                     if response.status in VALID_STATUS_CODES:
                         self.redis.max(proxy)
-                        print("代理可用")
+                        print("代理可用",proxy)
                     else:
                         self.redis.decrease(proxy)
                         print("请求响应码不合法：",proxy)
