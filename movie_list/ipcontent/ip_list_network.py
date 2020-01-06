@@ -51,15 +51,44 @@ class Crawler(metaclass=ProxyMetaClass):
     def crawl_89ip(self, page_count=5):
         start_url = "http://www.89ip.cn/index_{}.html"
         urls = [start_url.format(page) for page in range(1, page_count + 1)]
-        ip_data = []
         for url in urls:
             html = get_page(url)
             selected = etree.HTML(html)
             ips = selected.xpath('//div[@class="fly-panel"]/div[@class="layui-form"]/table//tr')
+            ips.remove(ips[0])
             for ippath in ips:
-                ip = ippath.xpath('//td/text()')[0].strip()
-                port = ippath.xpath('//td/text()')[1].strip()
+                ip = ippath.xpath('./td/text()')[0].strip()
+                port = ippath.xpath('./td/text()')[1].strip()
                 yield ":".join([ip, port])
+
+    def crawl_ip3366(self,page_count = 5):
+        start_url = "http://www.ip3366.net/?stype=1&page={}"
+        urls = [start_url.format(page) for page in range(1,page_count + 1)]
+        for url in urls:
+            html = get_page(url)
+            selected = etree.HTML(html)
+            ips = selected.xpath('//div[@id="list"]/table//tr')
+            ips.remove(ips[0])
+            for ippath in ips:
+                ip = ippath.xpath('./td/text()')[0]
+                port = ippath.xpath('./td/text()')[1]
+                yield ":".join([ip,port])
+
+    def crawl_xicidaili(self,page_count = 10):
+        start_url = "https://www.xicidaili.com/nn/{}"
+        urls = [start_url.format(page) for page in range(1,page_count + 1)]
+        for url in urls:
+            html = get_page(url)
+            selected = etree.HTML(html)
+            ips = selected.xpath('//table[@id="ip_list"]//tr')
+            ips.remove(ips[0])
+            for ippath in ips:
+                ip = ippath.xpath('./td/text()')[0]
+                port = ippath.xpath('./td/text()')[1]
+                yield ":".join([ip,port])
+
+
+
 
 class Getter():
     def __init__(self):
@@ -98,12 +127,48 @@ class test():
             html = get_page(url)
             selected = etree.HTML(html)
             ips = selected.xpath('//div[@class="fly-panel"]/div[@class="layui-form"]/table//tr')
+            ips.remove(ips[0])
             for ippath in ips:
-                ip = ippath.xpath('//td/text()')[0].strip()
-                port = ippath.xpath('//td/text()')[1].strip()
+                ip = ippath.xpath('./td/text()')[0].strip()
+                port = ippath.xpath('./td/text()')[1].strip()
                 yield ":".join([ip, port])
+
+    def crawl_ip3366(self,page_count = 5):
+        start_url = "http://www.ip3366.net/?stype=1&page={}"
+        urls = [start_url.format(page) for page in range(1,page_count + 1)]
+        for url in urls:
+            print(url)
+            html = get_page(url)
+            selected = etree.HTML(html)
+            ips = selected.xpath('//div[@id="list"]/table//tr')
+            print("ips is: ",ips)
+            ips.remove(ips[0])
+            for ippath in ips:
+                print("ip_path is: ",ippath)
+                ip = ippath.xpath('./td/text()')[0]
+                port = ippath.xpath('./td/text()')[1]
+                yield ":".join([ip,port])
+
+    def crawl_xicidaili(self,page_count = 1):
+        start_url = "https://www.xicidaili.com/nn/{}"
+        urls = [start_url.format(page) for page in range(1,page_count + 1)]
+        for url in urls:
+            html = get_page(url)
+            selected = etree.HTML(html)
+            ips = selected.xpath('//table[@id="ip_list"]//tr')
+            ips.remove(ips[0])
+            for ippath in ips:
+                ip = ippath.xpath('./td/text()')[0]
+                port = ippath.xpath('./td/text()')[1]
+                yield ":".join([ip,port])
+
+
 
 if __name__ == "__main__":
     net = Getter()
     net.run()
+    # t = test()
+    # t.crawl_89ip()
+    # t.crawl_ip3366()
+    # t.crawl_xicidaili()
 
