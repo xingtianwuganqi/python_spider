@@ -50,6 +50,7 @@ class Scheduler():
     def get_proxy(self):
         try:
             response = requests.get(PROXY_POOL_URL)
+            requests.adapters.DEFAULT_RETRIES = 5
             if response.status_code == 200:
                 print(response.text)
                 return response.text

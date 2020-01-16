@@ -25,7 +25,6 @@ class movie_list():
 
     def networking(self,url):
 
-        # proxy = "91.201.240.243:8080"
         print("Proxy:",self.proxy)
         proxies = {
             "http": "http://" + self.proxy,
@@ -103,41 +102,46 @@ class movie_list():
 
     def detail_text(self,text):
         select = etree.HTML(str(text))
-        movie_detail = select.xpath('//div[@class="wrap"]/div[@id="main"]/div[@id="main"]/div[@class="endpage clearfix"]')[0]
-        movie_detail_img = movie_detail.xpath('./div[@class="l"]/div[@class="pic"]/img/@src')[0]
-        movie_detail_name = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/h1/text()')[0]
-        movie_detail_year = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/ul')[0]
-        movie_actor = ""
-        movie_other_info = ""
-        for i in movie_detail_year:
-            if len(i.xpath('./a/text()')) > 0:
-                actors = i.xpath('./a/text()')
-                movie_actor = ",".join(actors)
-            else:
-                other_info = i.xpath('./text()')[0]
-                movie_other_info += other_info
-        movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
-        movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
-        movie_detail_downloads = movie_detail.xpath('./div[@class="mox"]')
-        movie_down_list = movie_detail_downloads[-1]
-        lists = movie_down_list.xpath('./div[@class="downlist"]/ul/script/text()')[0]
-        results = re.search('var.*?"(.*)".*?', lists, re.S)
-        movie_list_str = results.group(1)
-        movie_list_desc = ""
-        if len(movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')) > 0:
-            movies_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
-        return {
-            "movie_detail_img" : movie_detail_img,
-            "movie_detail_name" : movie_detail_name,
-            "movie_detail_year" : movie_detail_year,
-            "movie_actor" : movie_actor,
-            "movie_other_info" : movie_other_info,
-            "movie_detail_star": movie_detail_star,
-            "movie_detail_star_line": movie_detail_star_line,
-            "movie_list_str": movie_list_str,
-            "movie_list_desc" : movie_list_desc
-        }
-
+        movie = select.xpath('//div[@class="wrap"]/div[@id="main"]/div[@id="main"]/div[@class="endpage clearfix"]')
+        if len(movie) > 0:
+            movie_detail = movie[0]
+            movie_detail_img = movie_detail.xpath('./div[@class="l"]/div[@class="pic"]/img/@src')[0]
+            movie_detail_name = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/h1/text()')[0]
+            movie_detail_year = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/ul')[0]
+            movie_actor = ""
+            movie_other_info = ""
+            for i in movie_detail_year:
+                if len(i.xpath('./a/text()')) > 0:
+                    actors = i.xpath('./a/text()')
+                    movie_actor = ",".join(actors)
+                else:
+                    other_info = i.xpath('./text()')[0]
+                    movie_other_info += other_info
+            movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
+            movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
+            movie_detail_downloads = movie_detail.xpath('./div[@class="mox"]')
+            movie_down_list = movie_detail_downloads[-1]
+            lists = movie_down_list.xpath('./div[@class="downlist"]/ul/script/text()')
+            movie_list_desc = ""
+            movie_list_str = ""
+            if len(lists) > 0:
+                results = re.search('var.*?"(.*)".*?', lists[0], re.S)
+                movie_list_str = results.group(1)
+            if len(movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')) > 0:
+                movie_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
+            return {
+                "movie_detail_img" : movie_detail_img,
+                "movie_detail_name" : movie_detail_name,
+                "movie_detail_year" : movie_detail_year,
+                "movie_actor" : movie_actor,
+                "movie_other_info" : movie_other_info,
+                "movie_detail_star": movie_detail_star,
+                "movie_detail_star_line": movie_detail_star_line,
+                "movie_list_str": movie_list_str,
+                "movie_list_desc" : movie_list_desc
+            }
+        else:
+            return None
 
 
     def create_mysql_list(self,table_name):
@@ -190,6 +194,20 @@ class movie_list():
             self.db.rollback()
             print("error")
 
+    def update_data(self,dic):
+        key = dic["movie_type"]
+        list_name = self.getpingyin(key)
+        sql = 'UPDATE {} SET  (movie_type,movie_name,movie_url,movie_img,movie_actor,movie_star) VALUES (%s,%s,%s,%s,%s,%s)'.format(list_name)
+        print(sql)
+        try:
+            self.cursor.execute(sql,(str('%s')%dic["movie_type"],str('%s')%dic["movie_name"],str('%s')%dic["movie_url"],str('%s')%dic["movie_img"],str('%s')%dic["movie_actor"],str('%s')%dic["movie_star"]))
+            self.db.commit()
+            print("success")
+        except  Exception as e:
+            print(str(e))
+            self.db.rollback()
+            print("error")
+
     def insert_detail_data(self,dic):
 
         sql = 'insert into moviedetails (movie_detail_img,movie_detail_name,movie_detail_year,movie_actor,movie_other_info,movie_detail_star,movie_detail_star_line,movie_list_str,movie_list_desc) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
@@ -203,7 +221,27 @@ class movie_list():
             self.db.rollback()
             print("error")
 
+    def update_movie_detail_str_data(self,dic):
+        sql = "UPDATE dongzuopian SET movie_list_str = '{}' WHERE movie_detail_name = '{}'".format(str('%s')%dic["movie_list_str"],str('%s')%dic["movie_detail_name"])
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            print("success")
+        except  Exception as e:
+            print(str(e))
+            self.db.rollback()
+            print("error")
 
+    def update_movie_detail_desc_data(self,dic):
+        sql = "UPDATE dongzuopian SET movie_list_desc = '{}' WHERE movie_detail_name = '{}'".format(str('%s')%dic["movie_list_desc"],str('%s')%dic["movie_detail_name"])
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            print("success")
+        except  Exception as e:
+            print(str(e))
+            self.db.rollback()
+            print("error")
 
 if __name__ == '__main__':
     movies = movie_list()
@@ -224,29 +262,37 @@ if __name__ == '__main__':
     # dic = movies.movieList(text)
     # for i in dic:
     #     print(i)
-    #     # http://www.beiwo888.com/vod/40997/
-    #     if len(i['movie_url']) > 0:
-    #         detail_url = movies.baseUrl + i['movie_url']
-    #         detail_text = movies.networking(detail_url)
+        # http://www.beiwo888.com/vod/40997/
+        # if len(i['movie_url']) > 0:
+        #     detail_url = movies.baseUrl + i['movie_url']
+        #     detail_text = movies.networking(detail_url)
 
         # movies.insert_data(i)
 
     # text = movies.networking(movies.detail_text_url)
     # movies.detail_text(text)
 
-    urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html"]
-    for url in urls:
+    # urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html"]
+
+    for i in range(1,11):
+        print("第{}页".format(i))
+        url = ""
+        if i == 1:
+            url = "http://www.beiwo888.com/list/8/index.html"
+        else:
+            url = "http://www.beiwo888.com/list/8/index-{}.html".format(i)
         text = movies.networking(url)
         dic = movies.movieList(text)
         for i in dic:
             movies.insert_data(i)
             time.sleep(1)
-            if len(i["movie_url"]) > 0 :
+            if len(i["movie_url"]) > 0:
                 detail_url = movies.baseUrl + i['movie_url']
                 detail_text = movies.networking(detail_url)
                 detail_dic = movies.detail_text(detail_text)
                 movies.insert_detail_data(detail_dic)
                 time.sleep(1)
+        time.sleep(2)
 
 
 
