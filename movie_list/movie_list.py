@@ -120,26 +120,29 @@ class movie_list():
             movie_detail_star = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/text()')
             movie_detail_star_line = movie_detail.xpath('./div[@class="l"]/div[@class="info"]/div[@class="star"]/div[@class="pfen"]/div[@class="starscore"]/span[@class="no c1"]/i/text()')
             movie_detail_downloads = movie_detail.xpath('./div[@class="mox"]')
-            movie_down_list = movie_detail_downloads[-1]
-            lists = movie_down_list.xpath('./div[@class="downlist"]/ul/script/text()')
-            movie_list_desc = ""
-            movie_list_str = ""
-            if len(lists) > 0:
-                results = re.search('var.*?"(.*)".*?', lists[0], re.S)
-                movie_list_str = results.group(1)
-            if len(movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')) > 0:
-                movie_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
-            return {
-                "movie_detail_img" : movie_detail_img,
-                "movie_detail_name" : movie_detail_name,
-                "movie_detail_year" : movie_detail_year,
-                "movie_actor" : movie_actor,
-                "movie_other_info" : movie_other_info,
-                "movie_detail_star": movie_detail_star,
-                "movie_detail_star_line": movie_detail_star_line,
-                "movie_list_str": movie_list_str,
-                "movie_list_desc" : movie_list_desc
-            }
+            if len(movie_detail_downloads) > 0:
+                movie_down_list = movie_detail_downloads[-1]
+                lists = movie_down_list.xpath('./div[@class="downlist"]/ul/script/text()')
+                movie_list_desc = ""
+                movie_list_str = ""
+                if len(lists) > 0:
+                    results = re.search('var.*?"(.*)".*?', lists[0], re.S)
+                    movie_list_str = results.group(1)
+                if len(movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')) > 0:
+                    movie_list_desc = movie_detail.xpath('./div[@class="wrap"]/div[@id="main"]/div[@class="mox"]/div[@class="endtext"]/text()')[0]
+                return {
+                    "movie_detail_img" : movie_detail_img,
+                    "movie_detail_name" : movie_detail_name,
+                    "movie_detail_year" : movie_detail_year,
+                    "movie_actor" : movie_actor,
+                    "movie_other_info" : movie_other_info,
+                    "movie_detail_star": movie_detail_star,
+                    "movie_detail_star_line": movie_detail_star_line,
+                    "movie_list_str": movie_list_str,
+                    "movie_list_desc" : movie_list_desc
+                }
+            else:
+                return None
         else:
             return None
 
@@ -274,7 +277,7 @@ if __name__ == '__main__':
 
     # urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html"]
 
-    for i in range(1,11):
+    for i in range(21,31):
         print("第{}页".format(i))
         url = ""
         if i == 1:
