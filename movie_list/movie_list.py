@@ -277,7 +277,7 @@ if __name__ == '__main__':
 
     # urls = ["http://www.beiwo888.com/list/8/index.html","http://www.beiwo888.com/list/8/index-3.html"]
 
-    for i in range(21,31):
+    for i in range(31,41):
         print("第{}页".format(i))
         url = ""
         if i == 1:
