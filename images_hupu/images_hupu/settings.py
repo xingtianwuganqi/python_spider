@@ -64,9 +64,12 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'images_hupu.pipelines.ImagesHupuPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'images_hupu.pipelines.ImagePipline': 300,
+    'images_hupu.pipelines.MongoDBHupuPipeline': 400,
+}
+
+IMAGES_STORE = './images'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -88,3 +91,6 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+MONGO_URI = 'localhost'
+MONGO_DB = 'hupu'

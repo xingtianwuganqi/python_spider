@@ -27,10 +27,6 @@ class HupuSpider(scrapy.Spider):
         for i in lists:
             item = ImagesHupuItem()
             link = i.xpath('./div[@class="titlelink box"]/a/@href').extract()
-            # if len(link) > 1:
-            #     item["detail_url"] = link[-1]
-            # else:
-            #     item["detail_url"] = link[0]
             if link[-1] == "/25814835.html":
                 continue
             else:
@@ -48,7 +44,10 @@ class HupuSpider(scrapy.Spider):
             long_url = ""
             for i in imgurl:
                 img_url = i.split('?x',1)[0]
-                long_url = long_url + "," + img_url
+                if len(long_url) == 0:
+                    long_url = img_url
+                else:
+                    long_url = long_url + ',' + img_url
             item["image_url"] = long_url
             yield item
         else:
