@@ -24,15 +24,17 @@ class HupuSpider(scrapy.Spider):
 
     def parse(self, response):
         lists = response.xpath('//ul[@class="for-list"]/li')
-        if len(lists) > 0:
-            lists.remove(lists[0])
         for i in lists:
             item = ImagesHupuItem()
             link = i.xpath('./div[@class="titlelink box"]/a/@href').extract()
-            if len(link) > 1:
-                item["detail_url"] = link(-1)
+            # if len(link) > 1:
+            #     item["detail_url"] = link[-1]
+            # else:
+            #     item["detail_url"] = link[0]
+            if link[-1] == "/25814835.html":
+                continue
             else:
-                item["detail_url"] = link[0]
+                item["detail_url"] = link[-1]
             url = self.base_url + item["detail_url"]
             yield Request(url,meta={'item': item},callback=self.detail_parse)
 
