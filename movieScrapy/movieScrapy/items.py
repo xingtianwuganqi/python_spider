@@ -17,3 +17,6 @@ class MoviescrapyItem(scrapy.Item):
     movie_img = scrapy.Field()
     movie_actor = scrapy.Field()
     movie_star = scrapy.Field()
+    movie_year = scrapy.Field()
+    movie_download = scrapy.Field()
+    movie_description = scrapy.Field()
