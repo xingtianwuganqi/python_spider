@@ -6,7 +6,7 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
+import logging
 
 class CocoaSpiderSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,

@@ -4,8 +4,9 @@ from cocoa_spider.items import CocoaItem
 import requests, json
 class CocoaSpider(scrapy.Spider):
     name = 'cocoa'
-    allowed_domains = ['cocoachain']
-    start_urls = ['http://www.cocoachina.com/api/v1/articles?page=1&typeid=0']
+    allowed_domains = ['cocoachain','www.cocoachina.com','api.cocoachina.com']
+    start_urls = ['http://www.cocoachina.com/api/v1/articles']
+    begin_page = 1
 
     def parse(self, response):
         text = json.loads(response.text)
@@ -18,3 +19,12 @@ class CocoaSpider(scrapy.Spider):
             item['time'] = data["pubdate_new"]
             item['img_url'] = data["litpic"]
             yield item
+
+        #?page=1&typeid=0
+        if self.begin_page <= 1:
+            self.begin_page = self.begin_page + 1
+            next = '?page={}&typeid=0'.format(self.begin_page)
+            url = response.urljoin(next)
+            yield scrapy.Request(url=url,callback=self.parse)
+        else:
+            return

@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="94f57aac-c730-473c-a31d-de15a62cb5c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../PythonHP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../PythonHP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/images_hupu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/images_hupu.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../movieScrapy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../movieScrapy/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,23 +15,6 @@
         <option value="Python Script" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>item[&quot;detail_url&quot;] = link(-1)</find>
-      <find>ProxyMiddlewares</find>
-      <find>MIDDLEWARES</find>
-      <find>DOWNLOADER_MIDDLEWARES</find>
-      <find>proxy</find>
-      <find>cook</find>
-      <find>ROBOTSTXT_OBEY</find>
-      <find>PROXY_URL</find>
-      <find>list</find>
-      <find>获取代理失败</find>
-      <find>if request.meta.get('retry_times')</find>
-      <find>使用代理</find>
-      <find>代理不可用</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -146,7 +125,7 @@
       <workItem from="1591933433338" duration="154000" />
       <workItem from="1591941399795" duration="1021000" />
       <workItem from="1596265363472" duration="393000" />
-      <workItem from="1596267963985" duration="3905000" />
+      <workItem from="1596267963985" duration="10249000" />
     </task>
     <servers />
   </component>
