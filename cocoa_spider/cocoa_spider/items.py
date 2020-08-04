@@ -15,5 +15,7 @@ class CocoaItem(scrapy.Item):
     athor = scrapy.Field()
     time = scrapy.Field()
     img_url = scrapy.Field()
+    article_id = scrapy.Field()
+    article_text = scrapy.Field()
 
 

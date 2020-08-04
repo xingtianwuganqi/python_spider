@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2ea30bb-a5b5-41a1-8ced-920645f89a53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../PythonHP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../PythonHP/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../images_hupu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../images_hupu/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +122,7 @@
       <option name="presentableId" value="Default" />
       <updated>1579253730694</updated>
       <workItem from="1591933435947" duration="150000" />
+      <workItem from="1596507662739" duration="106000" />
     </task>
     <servers />
   </component>

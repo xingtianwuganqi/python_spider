@@ -20,7 +20,7 @@ class ImageDownLoad(ImagesPipeline):
     def get_media_requests(self, item, info):
         # 生成request对象，加入调度队列
         file_url = item['img_url']
-        print('first')
+        print('first',item['article_text'])
         if len(file_url) > 0:
             file_name = file_url.split('uploads')[-1]
             file_name = "http://cc.cocimg.com/api/uploads" + file_name
