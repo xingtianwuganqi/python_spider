@@ -34,6 +34,14 @@ class CocoaSpider(scrapy.Spider):
             url = self.article_url + str(item['article_id'])
             yield scrapy.Request(url=url, meta={'item': item}, callback=self.article_detail)
 
+        if len(datas) > 0:
+            self.begin_page = self.begin_page + 1
+            url = self.base_url + '?page={}&typeid=0'.format(self.begin_page)
+            print("page_page: ",self.begin_page)
+            yield scrapy.Request(url,callback=self.parse)
+        else:
+            return
+
     def article_detail(self,response):
         item = response.meta['item']
         detail = response.xpath('//div[@class="articles"]').extract_first()
