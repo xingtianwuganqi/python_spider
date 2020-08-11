@@ -12,5 +12,5 @@ import scrapy
 #     pass
 
 class hupuDetailItem(scrapy.Item):
-    # title = scrapy.Field()
+    title = scrapy.Field()
     imgs = scrapy.Field()
