@@ -7,10 +7,14 @@ class HupucrawlSpider(CrawlSpider):
     name = 'hupucrawl'
     allowed_domains = ['bbs.hupu.com']
     start_urls = ['https://bbs.hupu.com/selfie']
-
+    totolPage = 10
+    page = 1
     rules = (
         Rule(LinkExtractor(allow=r'/\d+.html$'), callback='parse_item', follow=False),
+        Rule(LinkExtractor(restrict_xpaths='//div[@class="showpage"]//a[contains(., "下一页")]')),
     )
+
+
 
     def parse_item(self, response):
         item = hupuDetailItem()
@@ -45,5 +49,7 @@ class HupucrawlSpider(CrawlSpider):
             yield item
         else:
             print("no img ",title)
-            yield None
-
+        if self.totolPage > self.page:
+            self.page += 1
+            next_page = "https://bbs.hupu.com/selfie-" + str(self.page)
+            yield scrapy.Request(next_page)

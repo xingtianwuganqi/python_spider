@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d59aeb70-19bd-420c-931c-370facb048f3" name="Default Changelist" comment="fix: crawlspider 应用">
-      <change beforePath="$PROJECT_DIR$/.idea/crawlhupu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/crawlhupu.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawlhupu/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawlhupu/items.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawlhupu/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawlhupu/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawlhupu/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawlhupu/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crawlhupu/spiders/hupucrawl.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawlhupu/spiders/hupucrawl.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,6 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1597055935014</updated>
       <workItem from="1597055937450" duration="1576000" />
+      <workItem from="1597142816458" duration="879000" />
     </task>
     <servers />
   </component>
@@ -99,22 +95,22 @@
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
     <state x="727" y="124" key="CommitChangelistDialog2/0.23.1920.1010@0.23.1920.1010" timestamp="1597060374732" />
-    <state width="1285" height="357" key="GridCell.Tab.0.bottom" timestamp="1597115965969">
+    <state width="1285" height="284" key="GridCell.Tab.0.bottom" timestamp="1597148585837">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="357" key="GridCell.Tab.0.bottom/0.23.1920.1010@0.23.1920.1010" timestamp="1597115965969" />
-    <state width="1285" height="357" key="GridCell.Tab.0.center" timestamp="1597115965968">
+    <state width="1285" height="284" key="GridCell.Tab.0.bottom/0.23.1920.1010@0.23.1920.1010" timestamp="1597148585837" />
+    <state width="1285" height="284" key="GridCell.Tab.0.center" timestamp="1597148585836">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="357" key="GridCell.Tab.0.center/0.23.1920.1010@0.23.1920.1010" timestamp="1597115965968" />
-    <state width="1285" height="357" key="GridCell.Tab.0.left" timestamp="1597115965968">
+    <state width="1285" height="284" key="GridCell.Tab.0.center/0.23.1920.1010@0.23.1920.1010" timestamp="1597148585836" />
+    <state width="1285" height="284" key="GridCell.Tab.0.left" timestamp="1597148585836">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="357" key="GridCell.Tab.0.left/0.23.1920.1010@0.23.1920.1010" timestamp="1597115965968" />
-    <state width="1285" height="357" key="GridCell.Tab.0.right" timestamp="1597115965969">
+    <state width="1285" height="284" key="GridCell.Tab.0.left/0.23.1920.1010@0.23.1920.1010" timestamp="1597148585836" />
+    <state width="1285" height="284" key="GridCell.Tab.0.right" timestamp="1597148585837">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="357" key="GridCell.Tab.0.right/0.23.1920.1010@0.23.1920.1010" timestamp="1597115965969" />
+    <state width="1285" height="284" key="GridCell.Tab.0.right/0.23.1920.1010@0.23.1920.1010" timestamp="1597148585837" />
     <state x="469" y="172" key="SettingsEditor" timestamp="1597110834445">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
@@ -125,6 +121,6 @@
     <state x="781" y="243" width="670" height="676" key="search.everywhere.popup/0.23.1920.1010@0.23.1920.1010" timestamp="1597056260340" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/crawlhupu$main.coverage" NAME="main Coverage Results" MODIFIED="1597115965961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/crawlhupu$main.coverage" NAME="main Coverage Results" MODIFIED="1597148585821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
