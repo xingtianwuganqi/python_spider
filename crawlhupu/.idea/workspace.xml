@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d59aeb70-19bd-420c-931c-370facb048f3" name="Default Changelist" comment="fix: crawlspider 应用">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawlhupu/spiders/hupucrawl.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawlhupu/spiders/hupucrawl.py" afterDir="false" />
-    </list>
+    <list default="true" id="d59aeb70-19bd-420c-931c-370facb048f3" name="Default Changelist" comment="fix: crawlspider 应用" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1597055935014</updated>
       <workItem from="1597055937450" duration="1576000" />
-      <workItem from="1597142816458" duration="879000" />
+      <workItem from="1597142816458" duration="1145000" />
     </task>
     <servers />
   </component>

@@ -11,7 +11,6 @@ class HupucrawlSpider(CrawlSpider):
     page = 1
     rules = (
         Rule(LinkExtractor(allow=r'/\d+.html$'), callback='parse_item', follow=False),
-        Rule(LinkExtractor(restrict_xpaths='//div[@class="showpage"]//a[contains(., "下一页")]')),
     )
 
 
