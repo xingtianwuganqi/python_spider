@@ -5,26 +5,33 @@
 
 
 # useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
-from MyQR import myqr
+# from itemadapter import ItemAdapter
+import qrcode
 import base64
 import os
 from freepac.settings import IMAGES_STORE
 from PIL import Image
+import os
 class FreepacPipeline:
     def process_item(self, item, spider):
-        method = item['method']
-        if method == 'RC4':
-            method = 'rc4'
-        qrcode_str = method + ':' + item['password'] + '@' + item['server'] + ':' + item['port']
-        print(qrcode_str)
-        bytes_url = qrcode_str.encode("utf-8")
-        str_url = base64.b64encode(bytes_url)  # 被编码的参数必须是二进制数据
+        qrcode_str = item['method'] + ':' + item['password'] + '@' + item['server'] + ':' + item['port']
+        if "\xa0" in qrcode_str:
+            arr = qrcode_str.split("\xa0")
+            print('arr ==== ',arr)
+            qrcode_str = arr[0] + ' ' + arr[1]
+        else:
+            print(" No Arr")
+        str_url = base64.b64encode(qrcode_str.encode('utf-8'))# 被编码的参数必须是二进制数据
+        print(str_url)
         code = 'ss://'+str(str_url, encoding = "utf-8")
         print(code)
-        img = myqr.run(words=code)
-        print(img)
-        # im.save('./Image/{}.png'.format(item['server'] + ':' + item['port']))
+        path = '{}.png'.format(item['server'] + ':' + item['port'])
+        if not os.path.exists(IMAGES_STORE):
+            os.makedirs(IMAGES_STORE)
+        filename = '{}{}{}'.format(IMAGES_STORE, os.sep, path)
+        print('os.sep ====',os.sep,filename)
+        img = qrcode.make(code)
+        img.save(filename)
         return item
 
 
