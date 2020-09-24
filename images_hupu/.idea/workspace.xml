@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94f57aac-c730-473c-a31d-de15a62cb5c9" name="Default Changelist" comment="" />
+    <list default="true" id="94f57aac-c730-473c-a31d-de15a62cb5c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/images_hupu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/images_hupu.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,6 +129,8 @@
       <workItem from="1596265363472" duration="393000" />
       <workItem from="1596267963985" duration="10788000" />
       <workItem from="1596507419339" duration="2389000" />
+      <workItem from="1600948699741" duration="66000" />
+      <workItem from="1600948828833" duration="120000" />
     </task>
     <servers />
   </component>
@@ -132,9 +138,9 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="521" y="170" key="SettingsEditor" timestamp="1591943251345">
-      <screen x="0" y="23" width="1920" height="999" />
+    <state x="294" y="146" key="SettingsEditor" timestamp="1600948725867">
+      <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state x="521" y="170" key="SettingsEditor/0.23.1920.999@0.23.1920.999" timestamp="1591943251345" />
+    <state x="294" y="146" key="SettingsEditor/0.23.1920.1010@0.23.1920.1010" timestamp="1600948725867" />
   </component>
 </project>
