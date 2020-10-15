@@ -14,6 +14,8 @@ from PIL import Image
 import os
 class FreepacPipeline:
     def process_item(self, item, spider):
+        if item['method'] == "aes-256-gcm":
+            return item
         qrcode_str = item['method'] + ':' + item['password'] + '@' + item['server'] + ':' + item['port']
         if "\xa0" in qrcode_str:
             arr = qrcode_str.split("\xa0")
