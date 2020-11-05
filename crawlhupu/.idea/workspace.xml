@@ -42,7 +42,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.run">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="crawlhupu" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -65,8 +65,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="crawlhupu" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/crawlhupu" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crawlhupu/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.run" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -83,6 +106,7 @@
       <updated>1597055935014</updated>
       <workItem from="1597055937450" duration="1576000" />
       <workItem from="1597142816458" duration="1456000" />
+      <workItem from="1600948948236" duration="2927000" />
     </task>
     <servers />
   </component>
@@ -94,26 +118,26 @@
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
     <state x="727" y="124" key="CommitChangelistDialog2/0.23.1920.1010@0.23.1920.1010" timestamp="1597060374732" />
-    <state width="1285" height="284" key="GridCell.Tab.0.bottom" timestamp="1597197703824">
+    <state width="1285" height="295" key="GridCell.Tab.0.bottom" timestamp="1600955402408">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="284" key="GridCell.Tab.0.bottom/0.23.1920.1010@0.23.1920.1010" timestamp="1597197703824" />
-    <state width="1285" height="284" key="GridCell.Tab.0.center" timestamp="1597197703824">
+    <state width="1285" height="295" key="GridCell.Tab.0.bottom/0.23.1920.1010@0.23.1920.1010" timestamp="1600955402408" />
+    <state width="1285" height="295" key="GridCell.Tab.0.center" timestamp="1600955402408">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="284" key="GridCell.Tab.0.center/0.23.1920.1010@0.23.1920.1010" timestamp="1597197703824" />
-    <state width="1285" height="284" key="GridCell.Tab.0.left" timestamp="1597197703824">
+    <state width="1285" height="295" key="GridCell.Tab.0.center/0.23.1920.1010@0.23.1920.1010" timestamp="1600955402408" />
+    <state width="1285" height="295" key="GridCell.Tab.0.left" timestamp="1600955402408">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="284" key="GridCell.Tab.0.left/0.23.1920.1010@0.23.1920.1010" timestamp="1597197703824" />
-    <state width="1285" height="284" key="GridCell.Tab.0.right" timestamp="1597197703824">
+    <state width="1285" height="295" key="GridCell.Tab.0.left/0.23.1920.1010@0.23.1920.1010" timestamp="1600955402408" />
+    <state width="1285" height="295" key="GridCell.Tab.0.right" timestamp="1600955402408">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state width="1285" height="284" key="GridCell.Tab.0.right/0.23.1920.1010@0.23.1920.1010" timestamp="1597197703824" />
-    <state x="469" y="172" key="SettingsEditor" timestamp="1597110834445">
+    <state width="1285" height="295" key="GridCell.Tab.0.right/0.23.1920.1010@0.23.1920.1010" timestamp="1600955402408" />
+    <state x="469" y="172" key="SettingsEditor" timestamp="1600949065161">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
-    <state x="469" y="172" key="SettingsEditor/0.23.1920.1010@0.23.1920.1010" timestamp="1597110834445" />
+    <state x="469" y="172" key="SettingsEditor/0.23.1920.1010@0.23.1920.1010" timestamp="1600949065161" />
     <state x="781" y="243" width="670" height="676" key="search.everywhere.popup" timestamp="1597056260340">
       <screen x="0" y="23" width="1920" height="1010" />
     </state>
@@ -121,5 +145,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/crawlhupu$main.coverage" NAME="main Coverage Results" MODIFIED="1597148585821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/crawlhupu$run.coverage" NAME="run Coverage Results" MODIFIED="1600950177901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/crawlhupu" />
   </component>
 </project>
