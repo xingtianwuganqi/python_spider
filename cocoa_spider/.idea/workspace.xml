@@ -2,11 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e50ddd7a-39de-43df-abc5-c00805b84e1d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cocoa_spider.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cocoa_spider.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../crawlhupu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../crawlhupu/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../video_hupu/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/items.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/middlewares.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/pipelines.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/spiders/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/images_hupu/spiders/hupu.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/scrapy.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/../video_hupu/scrapy.cfg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +92,7 @@
       <workItem from="1596266695984" duration="20238000" />
       <workItem from="1596507419547" duration="4003000" />
       <workItem from="1600939318289" duration="1556000" />
+      <workItem from="1604630575183" duration="588000" />
     </task>
     <servers />
   </component>

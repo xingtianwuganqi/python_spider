@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for images_hupu project
+# Scrapy settings for cocoa_spider project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,17 +9,17 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'images_hupu'
+BOT_NAME = 'cocoa_spider'
 
-SPIDER_MODULES = ['images_hupu.spiders']
-NEWSPIDER_MODULE = 'images_hupu.spiders'
+SPIDER_MODULES = ['cocoa_spider.spiders']
+NEWSPIDER_MODULE = 'cocoa_spider.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'images_hupu (+http://www.yourdomain.com)'
+#USER_AGENT = 'cocoa_spider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -47,14 +47,14 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'images_hupu.middlewares.ImagesHupuSpiderMiddleware': 543,
+#    'cocoa_spider.middlewares.CocoaSpiderSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'images_hupu.middlewares.ImagesHupuDownloaderMiddleware': 543,
-    'images_hupu.middlewares.ProxyMiddleware': 543
+    'cocoa_spider.middlewares.CocoaSpiderDownloaderMiddleware': 543,
+   # 'cocoa_spider.middlewares.ImageDownloaderMiddleware': 543,
 }
 
 # Enable or disable extensions
@@ -66,13 +66,9 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'images_hupu.pipelines.ImagePipline': 300,
-    'images_hupu.pipelines.MongoDBHupuPipeline': 400,
+   # 'cocoa_spider.pipelines.CocoaSpiderPipeline': 300,
+   #  'cocoa_spider.pipelines.ImageDownLoad': 300,
 }
-
-IMAGES_STORE = './images'
-PROXY_POOL_URL = 'http://localhost:5000/random'
-PROXY_URL = 'http://localhost:5000/random'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -94,8 +90,12 @@ PROXY_URL = 'http://localhost:5000/random'
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36'
+IMAGES_STORE = './images'
 
-MONGO_URI = 'localhost'
-MONGO_DB = 'hupu'
 
-RETRY_HTTP_CODES = [401, 403, 408, 414, 500, 502, 503, 504]
+
+
+
+
+

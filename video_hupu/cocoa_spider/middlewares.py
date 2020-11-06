@@ -6,11 +6,9 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-import requests
 import logging
-import sys
 
-class ImagesHupuSpiderMiddleware(object):
+class CocoaSpiderSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -58,7 +56,7 @@ class ImagesHupuSpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class ImagesHupuDownloaderMiddleware(object):
+class CocoaSpiderDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
@@ -103,65 +101,3 @@ class ImagesHupuDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
-
-
-class ProxyMiddleware(object):
-    def __init__(self, proxy_url):
-        self.logger = logging.getLogger(__name__)
-        self.proxy_url = proxy_url
-        self.proxy = ""
-
-    def get_random_proxy(self):
-        try:
-            self.logger.debug("请求地址 " + self.proxy_url)
-            response = requests.get(self.proxy_url)
-            if response.status_code == 200:
-                proxy = response.text
-                return proxy
-        except requests.ConnectionError:
-            return False
-
-    def process_request(self, request, spider):
-        # if request.meta.get('retry_times'):  #如果重试次数为0，就使用默认的ip地址进行页面爬取，否则使用代理
-        if len(self.proxy) > 0 and self.test_proxy(self.proxy):
-            uri = 'https://{proxy}'.format(proxy=self.proxy)
-            self.logger.debug('使用代理 ' + self.proxy)
-            request.meta["proxy"] = uri
-        else:
-            self.proxy = self.get_random_proxy()
-            self.logger.debug("++++=== " + self.proxy)
-            if self.test_proxy(self.proxy):
-                if self.proxy:
-                    uri = 'https://{proxy}'.format(proxy=self.proxy)
-                    self.logger.debug('使用代理 ' + self.proxy)
-                    request.meta['proxy'] = uri
-                else:
-                    self.logger.debug('代理不可用')
-                    return request
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        settings = crawler.settings
-        return cls(
-            proxy_url=settings.get('PROXY_URL')
-        )
-
-
-    def test_proxy(self,proxy):
-        proxies = {
-            "http": "http://" + self.proxy,
-            "https": "https://" + self.proxy,
-        }
-        try:
-            response = requests.get('https://bbs.hupu.com/25814835.html',proxies = proxies,timeout = 5)
-            if response.status_code == 200:
-                return True
-            else:
-                return False
-        except:
-            return False
-
-    def use_proxy(self,proxy):
-        uri = 'https://{proxy}'.format(proxy=self.proxy)
-        self.logger.debug('使用代理 ' + self.proxy)
-        return uri

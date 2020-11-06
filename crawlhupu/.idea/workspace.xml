@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d59aeb70-19bd-420c-931c-370facb048f3" name="Default Changelist" comment="fix: crawlspider 应用">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../video_hupu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../video_hupu/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +107,7 @@
       <workItem from="1597055937450" duration="1576000" />
       <workItem from="1597142816458" duration="1456000" />
       <workItem from="1600948948236" duration="2927000" />
+      <workItem from="1604630479527" duration="50000" />
     </task>
     <servers />
   </component>
