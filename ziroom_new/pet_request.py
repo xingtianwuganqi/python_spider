@@ -1,9 +1,11 @@
 # encoding:utf-8
 import requests
 import json
+import time
+
 
 # 找狗小程序
-def getRescueList():
+def zhaogouNetworking():
 	'''
 	https://api.zuul.cuuhn.com/petsuu-gateway/find-pet-web/giveRise/getPlaceAdoptionDetail?id=73886&sourceChannel=PLACE_ADOPTION_DETAIL&sourceChannelId=73886&find_pet_access_token=&loginPlugin=WEI_XIN_MINI_APP
 	标题，内容，图片，联系方式，位置
@@ -19,23 +21,26 @@ def getRescueList():
 			results = dic['result']['content']
 			# print(results)
 			for result in results:
-				if result['isFound'] == False and result['deleted'] == False:
-					# print(result)
-					content = {}
-					content['title'] = result['title']
-					content['id'] = result['id']
-					content['content'] = result['description']
-					content['imgs'] = result['images']
-					content['address'] = result['address']
-					content['updateTime'] = result['updateTime']
-					url = "https://api.zuul.cuuhn.com/petsuu-gateway/find-pet-web/giveRise/getPlaceAdoptionDetail?id={}&sourceChannel=PLACE_ADOPTION_DETAIL&sourceChannelId=73886&find_pet_access_token=&loginPlugin=WEI_XIN_MINI_APP".format(result['id'])
-					response = requests.get(url,headers=headers)
-					detailInfo = json.loads(response.text)
-					if detailInfo['success'] == True:
-						content['weChatNumber'] = detailInfo['result']['weChatNumber']
-					print(content)
+				detail_url='https://api.zuul.cuuhn.com/petsuu-gateway/find-pet-web/giveRise/getPlaceAdoptionDetail?id={}&sourceChannel=PLACE_ADOPTION_DETAIL&sourceChannelId={}&find_pet_access_token=&loginPlugin=WEI_XIN_MINI_APP'.format(result['id'],result['id'])
+				detail_res = requests.get(detail_url)
+				if detail_res.status_code == 200:
+					detail_dic = json.loads(detail_res.text)['result']
+					if detail_dic['requireMaintenanceLabelName'] == '无偿领养':
+						content = {}
+						content['nickname'] = detail_dic['name'] 
+						content['age'] = detail_dic['age']
+						content['petBreedType'] = detail_dic['petBreedType']
+						content["putTime"] = detail_dic['putTime']
+						content['title'] = detail_dic['title']
+						content['description'] = detail_dic['description']
+						content['address'] = detail_dic['address']
+						content['weChatNumber'] = detail_dic['weChatNumber']
+						content['cityMaintenanceLabelName'] = detail_dic['cityMaintenanceLabelName']
+						content['requireMaintenanceLabelName'] = detail_dic['requireMaintenanceLabelName']
+						print(content)
+					
 
-
+# 得宠小程序
 def dechongNetworking():
 	url = 'https://app.dechongtech.com/api/publish'
 	data = {
@@ -56,11 +61,7 @@ def dechongNetworking():
 	# print(response.text)
 	if response.status_code == 200: 
 		dics = json.loads(response.text)
-		# print(dics)
 		for dic in dics:
-			# print(dic)
-			# if dic['status'] == 0 and dic['price_status'] == 0:
-			# 	print('==========-=========-----------')
 			content = {}
 			if dic['status'] == 0 and dic['price_status'] == 0:
 				content['content'] = dic['desc']
@@ -88,43 +89,79 @@ def dechongNetworking():
 						content['is_sterilized'] = detailDic['is_sterilized'] # 绝育
 			print(content)
 
-
-'''
-"is_deinsect" : true,
-  "real_read_count" : 71,
-  "is_immune" : false,
-  "is_report" : false,
-  "name" : "七一",
-  "__v" : 0,
-  "src_picture" : [
-
-  ],
-  "status" : 0,
-  "avatar" : "https:\/\/thirdwx.qlogo.cn\/mmopen\/vi_32\/Q0j4TwGTfTIQS43ZoGWtCIsmEsDHZQ01pmlAY0ovu0xert1sTOertPwpavMZFz0SCDXibicAAVdDibiaf7AkmUia4mQ\/132",
-  "city" : [
-    "北京市",
-    "北京市",
-    "西城区"
-  ],
-  "is_sterilized" : false,
-  "loc" : [
-    116.40345764160156,
-    39.898639678955078
-  ],
-  "recommand_count" : 0,
-  "last_login" : "2021-07-25T06:06:09.952Z",
-  "breeding" : "383977e8d8efd88cf33e71199cc37393",
-  "desc" : "七一100周年救助于前门。\n所以取名为71 \n小姑娘，一摸就打呼噜。\n爱吃肉和主食罐，身体无敌健康。\n活泼可爱。",
-  "openid" : "oxmi94lapAQJQ7026oAz6_VgBfVY",
-  "gender" : 2,
-  "age" : "0-3个月",
-'''
+def chongwubangNetworking():
+	url = 'https://app.petbang2014.com/adopt-api/adopt/page'
+	data = {
+	  "pageIndex" : 1,
+	  "pageSize" : "10",
+	  "city" : "北京市",
+	  "type" : ""
+	}
+	headers = {
+		'Host': 'app.petbang2014.com',
+		# 'Connection': 'keep-alive',
+		'Connection': 'close',
+		'Content-Length': '120',
+		'thirdSession': '1d9eb21a-d3be-4a10-a2a2-0fa5d50926e6',
+		'content-type': 'application/json',
+		'Accept-Encoding': 'gzip,compress,br,deflate',
+		# 'User-Agent': 'User-Agent:Mozilla/5.0',
+		# 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.9(0x1800092c) NetType/WIFI Language/zh_CN',
+		# 'User-Agent': 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
+		'User-Agent': 'Mozilla/5.0(iPhone;CPUiPhoneOS14_7_1likeMacOSX)AppleWebKit/605.1.15(KHTML,likeGecko)Mobile/15E148MicroMessenger/8.0.9(0x1800092c)NetType/WIFILanguage/zh_CN',
+		'Referer': 'https://servicewechat.com/wxa027f226179d34a5/226/page-frame.html'
+	}
+	response = requests.post(url,data=json.dumps(data),headers=headers)
+	if response.status_code == 200:
+		dics = json.loads(response.text)
+		arr = dics['data']['records']
+		print(len(arr))
+		if len(arr) > 0:
+			for i in range(0,len(arr)):
+				time.sleep(5)
+				print('petttttttttttttttid',arr[i]['id'])
+				id = arr[i]['id']
+				detail_url = 'https://app.petbang2014.com/adopt-api/adopt/detail?id={}'.format(id)
+				detail_res = requests.get(detail_url)
+				if detail_res.status_code == 200:
+					detail_dic = json.loads(detail_res.text)['data']
+					if detail_dic['price'] is None and detail_dic['status'] == 0:
+						content = {}
+						content['nickName'] = detail_dic['nickName']
+						content['sex'] = detail_dic['sex']
+						content['age'] = detail_dic['age']
+						content['isBorn'] = detail_dic['isBorn'] # 已绝育
+						content['isVaccine'] = detail_dic['isVaccine'] # 已免疫
+						content['isParasite'] = detail_dic['isParasite'] # 已驱虫
+						content['content'] = detail_dic['description']
+						content['city'] = detail_dic['city']
+						content['address'] = detail_dic['address']
+						content['img'] = detail_dic['img']
+						content['img1'] = detail_dic['img1']
+						content['img2'] = detail_dic['img2']
+						content['createTime'] = detail_dic['createTime']
+						content['mobile'] = detail_dic['user']['mobile']
+						content['weixin'] = detail_dic['user']['weixin']
+						adoptConditions = ''
+						adopts = detail_dic['adoptConditions']
+						if len(adopts) > 0:
+							for j in range(0,len(adopts)):
+								ad = adopts[j]
+								adoptConditions = adoptConditions + ad['condition']
+						content['adoptConditions'] = adoptConditions
+						print(content)
+				else:
+					print(detail_res)
+		else:
+			print('============-----------=============')
+				# if pet['isFree'] == 0 and pet['']
 
 
 
 if __name__ == "__main__":
-	# getRescueList()
-	dechongNetworking()
+	zhaogouNetworking()
+	# dechongNetworking()
+	# chongwubangNetworking()
 
 
 
