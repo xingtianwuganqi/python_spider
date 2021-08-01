@@ -38,6 +38,7 @@ def zhaogouNetworking():
 						content['cityMaintenanceLabelName'] = detail_dic['cityMaintenanceLabelName']
 						content['requireMaintenanceLabelName'] = detail_dic['requireMaintenanceLabelName']
 						print(content)
+						time.sleep(3)
 					
 
 # 得宠小程序
@@ -87,7 +88,8 @@ def dechongNetworking():
 						content['is_immune'] = detailDic['is_immune'] # 免疫
 					if 'is_sterilized' in detailDic.keys():
 						content['is_sterilized'] = detailDic['is_sterilized'] # 绝育
-			print(content)
+				print(content)
+				time.sleep(3)
 
 def chongwubangNetworking():
 	url = 'https://app.petbang2014.com/adopt-api/adopt/page'
@@ -118,7 +120,6 @@ def chongwubangNetworking():
 		print(len(arr))
 		if len(arr) > 0:
 			for i in range(0,len(arr)):
-				time.sleep(5)
 				print('petttttttttttttttid',arr[i]['id'])
 				id = arr[i]['id']
 				detail_url = 'https://app.petbang2014.com/adopt-api/adopt/detail?id={}'.format(id)
@@ -150,6 +151,7 @@ def chongwubangNetworking():
 								adoptConditions = adoptConditions + ad['condition']
 						content['adoptConditions'] = adoptConditions
 						print(content)
+						time.sleep(5)
 				else:
 					print(detail_res)
 		else:
@@ -159,8 +161,8 @@ def chongwubangNetworking():
 
 
 if __name__ == "__main__":
-	zhaogouNetworking()
-	# dechongNetworking()
+	# zhaogouNetworking()
+	dechongNetworking()
 	# chongwubangNetworking()
 
 
