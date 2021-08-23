@@ -37,6 +37,7 @@ def zhaogouNetworking():
 						content['weChatNumber'] = detail_dic['weChatNumber']
 						content['cityMaintenanceLabelName'] = detail_dic['cityMaintenanceLabelName']
 						content['requireMaintenanceLabelName'] = detail_dic['requireMaintenanceLabelName']
+						content['images'] = detail_dic['images']
 						print(content)
 						time.sleep(3)
 					
