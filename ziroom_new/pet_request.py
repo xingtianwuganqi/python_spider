@@ -48,21 +48,28 @@ def zhaogouNetworking(city):
 					detail_dic = json.loads(detail_res.text)['result']
 					if detail_dic['requireMaintenanceLabelName'] == '无偿领养':
 						content = {}
-						content['nickname'] = detail_dic['name'] 
+						content['name'] = detail_dic['name'] 
 						content['age'] = detail_dic['age']
+						content['gender'] = detail_dic['sex']
 						content['petBreedType'] = detail_dic['petBreedType']
 						content["putTime"] = detail_dic['putTime']
 						content['title'] = detail_dic['title']
-						content['description'] = detail_dic['description']
+						content['content'] = detail_dic['title'] + detail_dic['description']
 						content['address'] = detail_dic['address']
-						content['weChatNumber'] = detail_dic['weChatNumber']
+						content['wechat'] = detail_dic['weChatNumber']
 						content['cityMaintenanceLabelName'] = detail_dic['cityMaintenanceLabelName']
 						content['requireMaintenanceLabelName'] = detail_dic['requireMaintenanceLabelName']
-						content['images'] = detail_dic['images']
+						content['require'] = detail_dic['cityMaintenanceLabelName'] + detail_dic['requireMaintenanceLabelName']
+						content['phone'] = ''
+						content['imgs'] = detail_dic['images']
+						content['is_deinsect'] = False
+						content['is_immune'] = False
+						content['is_sterilized'] = False
+						content['address_info'] =  detail_dic['cityMaintenanceLabelName'] + "." + detail_dic['requireMaintenanceLabelName']
 						print('create_time',detail_dic['putTime'])
 						print(content)
 						time.sleep(3)
-					
+						createMarkDown(content)
 
 # 得宠小程序
 def dechongNetworking(text):
@@ -107,14 +114,22 @@ def dechongNetworking(text):
 						content['gender'] = detailDic['gender'] # 1公 2母
 					if 'is_deinsect' in detailDic.keys():
 						content['is_deinsect'] = detailDic['is_deinsect'] # 驱虫
+					else:
+						content['is_deinsect'] = False
+
 					if 'is_immune' in detailDic.keys():
 						content['is_immune'] = detailDic['is_immune'] # 免疫
+					else:
+						content['is_immune'] = False
 					if 'is_sterilized' in detailDic.keys():
 						content['is_sterilized'] = detailDic['is_sterilized'] # 绝育
+					else:
+						content['is_sterilized'] = False
 
 				print('create_time',dic['create_at'])
 				print(content)
 				time.sleep(3)
+				createMarkDown(content)
 
 def chongwubangNetworking(city):
 	url = 'https://app.petbang2014.com/adopt-api/adopt/page'
@@ -153,30 +168,41 @@ def chongwubangNetworking(city):
 					detail_dic = json.loads(detail_res.text)['data']
 					if detail_dic['price'] is None and detail_dic['status'] == 0:
 						content = {}
-						content['nickName'] = detail_dic['nickName']
-						content['sex'] = detail_dic['sex']
+						content['name'] = detail_dic['nickName']
+						content['gender'] = 1 if detail_dic['sex'] == "男孩" else 2
 						content['age'] = detail_dic['age']
-						content['isBorn'] = detail_dic['isBorn'] # 已绝育
-						content['isVaccine'] = detail_dic['isVaccine'] # 已免疫
-						content['isParasite'] = detail_dic['isParasite'] # 已驱虫
+						content['is_sterilized'] = True if detail_dic['isBorn'] == 1 else False # 已绝育
+						content['is_deinsect'] = True if detail_dic['isVaccine'] == 1 else False # 已免疫
+						content['is_immune'] = True if detail_dic['isParasite'] == 1 else False # 已驱虫
 						content['content'] = detail_dic['description']
+						content['address'] = detail_dic['city'] + detail_dic['address']
 						content['city'] = detail_dic['city']
-						content['address'] = detail_dic['address']
+						content['location'] = detail_dic['address']
 						content['img'] = detail_dic['img']
 						content['img1'] = detail_dic['img1']
 						content['img2'] = detail_dic['img2']
 						content['createTime'] = detail_dic['createTime']
-						content['mobile'] = detail_dic['user']['mobile']
-						content['weixin'] = detail_dic['user']['weixin']
+						content['phone'] = detail_dic['user']['mobile']
+						content['wechat'] = detail_dic['user']['weixin']
+						content['address'] = detail_dic['city'] + "." + detail_dic['address']
 						adoptConditions = ''
 						adopts = detail_dic['adoptConditions']
 						if len(adopts) > 0:
 							for j in range(0,len(adopts)):
 								ad = adopts[j]
 								adoptConditions = adoptConditions + ad['condition']
-						content['adoptConditions'] = adoptConditions
+						content['require'] = adoptConditions
+						imgs = []
+						if len(detail_dic['img']) > 0:
+							imgs.append(detail_dic['img'])
+						if len(detail_dic['img1']) > 0:
+							imgs.append(detail_dic['img1'])
+						if len(detail_dic['img2']) > 0:
+							imgs.append(detail_dic['img2'])
+						content['imgs'] = imgs
 						print('create_time',detail_dic['createTime'])
 						print(content)
+						createMarkDown(content)
 						time.sleep(5)
 				else:
 					print(detail_res)
@@ -200,7 +226,7 @@ def jiuzhuquan(city):
 						'Host': 'www.jzqlyptall.com',
 						'Connection': 'keep-alive',
 						'content-type': 'application/json',
-						'access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MTYyLCJpc3MiOiJodHRwOlwvXC93d3cubGluZ3Nlci5jblwvIiwiYXVkIjoicWlhb2hhbyIsImlhdCI6MTYzNzUwMzg1OCwibmJmIjoxNjM3NTAzODU4LCJleHAiOjE2MzgxMDg2NTh9.gyKrj8f3pmNHKEcJmNHprSCPkr7JBRnnoo2c8js1k8c',
+						'access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MTYyLCJpc3MiOiJodHRwOlwvXC93d3cubGluZ3Nlci5jblwvIiwiYXVkIjoicWlhb2hhbyIsImlhdCI6MTY0MDMzMjg2MiwibmJmIjoxNjQwMzMyODYyLCJleHAiOjE2NDA5Mzc2NjJ9.x0Jmns-MpHcV0hH6hGLz-cii6ZPzb1KddcDx6eQqY_s',
 						'Accept-Encoding': 'gzip,compress,br,deflate',
 						'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.16(0x1800102c) NetType/WIFI Language/zh_CN',
 						'Referer': 'https://servicewechat.com/wx6a6c625ab3a2bc10/24/page-frame.html'
@@ -215,32 +241,111 @@ def jiuzhuquan(city):
 							if detail_data['status'] == 1 and detail_data['pay_or_free'] == 1:
 								content = {}
 								content['name'] = detail_data['pet_nickname']
-								content['gender'] = detail_data['sex']
+								content['gender'] = detail_data['pet_sex']
 								content['age'] = detail_data['age']
+								content['address'] = detail_data['location']
 								content['province'] = detail_data['province']
 								content['city'] = detail_data['city']
 								content['location'] = detail_data['location']
 								content['district'] = detail_data['district']
-								content['story'] = detail_data['story']
-								content['mobile'] = detail_data['mobile']
+								content['content'] = detail_data['story']
+								content['phone'] = detail_data['mobile']
 								content['wechat'] = detail_data['wechat']
 								content['create_time'] = detail_data['create_time']
 								content['vaccine'] = detail_data['vaccine']
+								content['is_deinsect'] = True if detail_data['vaccine_id'] == 1 else False
+								content['is_immune'] = True if detail_data['expelling_parasite_id'] == 1 else False
+								content['is_sterilized'] = True if detail_data['sterilize_id'] == 1 else False
 								content['sterilize'] = detail_data['sterilize']
 								content['expelling_parasite'] = detail_data['expelling_parasite']
 								content['body'] =  detail_data['body']
 								content['hair'] = detail_data['hair']
+								content['require'] = '，'.join(detail_data['adopt_requirements_list'])
+								# print('--------',content['carousel'])
+								imgUrls = []
+								for img in detail_data['carousel']:
+									url = img['attachment']
+									if len(url) > 0:
+										imgUrls.append(url)
+								content['imgs'] = imgUrls
 								print('create_time',detail_data['create_time'])
 								print(content)
+								createMarkDown(content)
 								time.sleep(5)
 						else:
 							print(detail_detail['msg'])
 							time.sleep(5)
 
 
+def createMarkDown(dic):
+
+	img_str = ''
+	for i in dic['imgs']:
+		img_url = '![]({})'.format(i) + '  '
+		img_str = img_str + img_url
+	mark_str = '''
+## 猫咪找领养！ 坐标{}
+>名字：{}  
+性别：{}  
+{}、{}、{}  
+{}  
+领养要求：{}  
+坐标：{}  
+微信：{}  
+请备注领养  
+电话：{}  
+**回复1396获取联系方式**  
+{}
+'''.format(
+		dic['address'],
+		dic['name'],
+		("公" if dic['gender'] == 1 else "母"),
+		('已免疫' if dic['is_deinsect'] == True else '未免疫'),
+		("已驱虫" if dic['is_immune'] == True else "未驱虫"),
+		('已绝育' if dic['is_sterilized'] == True else '未绝育'),
+		dic['content'],
+		dic['require'],
+		dic['address'],
+		dic['wechat'],
+		dic['phone'],
+		img_str)
+	print(mark_str)
+	print('uploadData is ========================')
+	# 更新到服务器
+
+	upload_content = '''
+名字：{}  
+性别：{}  
+{}、{}、{}  
+{}  
+领养要求：{}  
+坐标：{}    
+'''.format(
+		dic['name'],
+		("公" if dic['gender'] == 1 else "母"),
+		('已免疫' if dic['is_deinsect'] == True else '未免疫'),
+		("已驱虫" if dic['is_immune'] == True else "未驱虫"),
+		('已绝育' if dic['is_sterilized'] == True else '未绝育'),
+		dic['content'],
+		dic['require'],
+		dic['address'],
+		)
+
+	upload_contact = '微信：{}，请备注领养'.format(dic['wechat'])
+	upload_img = ",".join(dic['imgs'])
+	upload_address = dic['address']
+	upload_dic = {
+		'content': upload_content,
+		'imgs': upload_img,
+		'address_info': upload_address,
+		'contact': upload_contact
+	}
+	print(upload_dic)
+	print('=====================================')
 
 if __name__ == "__main__":
-	zhaogouNetworking('北京市')
+	# zhaogouNetworking('北京市')
+	zhaogouNetworking('广州市')
 	# chongwubangNetworking('北京市')
 	# chongwubangNetworking('上海市')
 	# chongwubangNetworking('广州市')
