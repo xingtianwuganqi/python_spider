@@ -195,9 +195,9 @@ def chongwubangNetworking(city):
 						imgs = []
 						if len(detail_dic['img']) > 0:
 							imgs.append(detail_dic['img'])
-						if len(detail_dic['img1']) > 0:
+						if detail_dic['img1'] != None:
 							imgs.append(detail_dic['img1'])
-						if len(detail_dic['img2']) > 0:
+						if detail_dic['img2'] != None:
 							imgs.append(detail_dic['img2'])
 						content['imgs'] = imgs
 						print('create_time',detail_dic['createTime'])
@@ -319,8 +319,7 @@ def createMarkDown(dic):
 {}、{}、{}  
 {}  
 领养要求：{}  
-坐标：{}    
-'''.format(
+坐标：{}'''.format(
 		dic['name'],
 		("公" if dic['gender'] == 1 else "母"),
 		('已免疫' if dic['is_deinsect'] == True else '未免疫'),
@@ -345,11 +344,11 @@ def createMarkDown(dic):
 
 if __name__ == "__main__":
 	# zhaogouNetworking('北京市')
-	zhaogouNetworking('广州市')
+	# zhaogouNetworking('广州市')
 	# chongwubangNetworking('北京市')
 	# chongwubangNetworking('上海市')
 	# chongwubangNetworking('广州市')
-	# dechongNetworking('北京市')
+	dechongNetworking('北京市')
 	# dechongNetworking('上海市')
 	# dechongNetworking('广州市')
 	# dechongNetworking('昆明市')

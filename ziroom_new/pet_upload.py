@@ -8,10 +8,10 @@ def petUploadNetworking(text):
 		'imgs': text['imgs'],
 		'address_info': text['address_info'],
 		'contact': text['contact'],
-		'token': '2acc94559fdb6ef6a6d630d345f2580b'
+		'token': 'f3db5cb47b4d3d72dd664ccb00b0bf4d'
 	}
 	headers = {'Content-Type': 'application/json'}
-	url = 'https://test.rxswift.cn/api/v1/releasetopic/'
+	url = 'https://rescue.rxswift.cn/api/v1/releasetopic/'
 	print('data',json.dumps(data))
 	response = requests.post(url,headers=headers,data=json.dumps(data))
 	if response.status_code == 200:
@@ -22,7 +22,7 @@ def petUploadNetworking(text):
 
 
 if __name__ == "__main__":
-	text = {'content': '\n>名字：流二代小橘猫  \n性别：母  \n未免疫、未驱虫、未绝育  \n流二代小橘猫找主人要求如下\n1.不吃毒猫粮，喂健康猫粮\n2.封窗，不散养，不笼养\n3.打妙三多猫三联，适龄绝育\n4.经济稳定，猫生病要去看病\n5.希望有责任心，把猫当成家里的一份子，尊重生命，不随意遗弃宠物或虐猫践踏生命！  \n领养要求：仅限同城无偿领养  \n坐标：广东省广州市白云区望岗西胜街1号    \n', 'imgs': 'https://petsuuu.oss-cn-beijing.aliyuncs.com/upload/2022-02-17/8c155558b22b48528d9811e2a4a14224.jpg', 'address_info': '广东省广州市白云区望岗西胜街1号', 'contact': '微信：17520094467，请备注领养'}
+	text = {'content': '名字：虎皮美短  \n性别：公  \n已免疫、已驱虫、未绝育  \n可爱温顺粘人  \n领养要求：找个喜欢猫，靠谱的家人，无偿领养，  \n坐标：北京市北京市顺义区', 'imgs': 'https://dechong.oss-cn-qingdao.aliyuncs.com/publish_pic/oxmi94qnrPvflNz1BY4mS5_FC_Ys_1645360324198_6dd69ca43ee3.jpg,https://dechong.oss-cn-qingdao.aliyuncs.com/publish_pic/oxmi94qnrPvflNz1BY4mS5_FC_Ys_1645360324526_2d2a204d298d.jpg', 'address_info': '北京.北京市.顺义区', 'contact': '微信：15711019201，请备注领养'}
 	petUploadNetworking(text)
 
 
