@@ -2,7 +2,7 @@ import requests
 import json
 import time
 
-class petcity(Enum):
+class petcity:
 	bj = 'f3db5cb47b4d3d72dd664ccb00b0bf4d'
 	sh = '1f256c188f41a114e7139faab3c38581'
 	gz = '3f21b9934bfc2e38d81b52b9cb4aed75'
@@ -14,7 +14,7 @@ def petUploadNetworking(text):
 		'imgs': text['imgs'],
 		'address_info': text['address_info'],
 		'contact': text['contact'],
-		'token': petcity.bj
+		'token': petcity.gz
 	}
 	headers = {'Content-Type': 'application/json'}
 	url = 'https://rescue.rxswift.cn/api/v1/releasetopic/'
@@ -29,7 +29,14 @@ def petUploadNetworking(text):
 
 if __name__ == "__main__":
 	## 确保修改 城市 address_info 字段
-	text = {'content': '名字：虎皮美短  \n性别：公  \n已免疫、已驱虫、未绝育  \n可爱温顺粘人  \n领养要求：找个喜欢猫，靠谱的家人，无偿领养，  \n坐标：北京市北京市顺义区', 'imgs': 'https://dechong.oss-cn-qingdao.aliyuncs.com/publish_pic/oxmi94qnrPvflNz1BY4mS5_FC_Ys_1645360324198_6dd69ca43ee3.jpg,https://dechong.oss-cn-qingdao.aliyuncs.com/publish_pic/oxmi94qnrPvflNz1BY4mS5_FC_Ys_1645360324526_2d2a204d298d.jpg', 'address_info': '北京.北京市.顺义区', 'contact': '微信：15711019201，请备注领养'}
+	## 图片不能太长
+	text =
+	{
+	'content': '\n名字：一点黑  \n性别：母  \n未免疫、未驱虫、未绝育  \n自家猫生的，有爱心小伙伴可以带回家自家猫生的，元旦节当天出生，活泼可爱，有想要养猫的小伙伴可以带它回家  \n领养要求：仅限同城无偿领养  \n坐标：广州市番禺区东乡村一节二巷3号',
+	'imgs': 'https://petsuuu.oss-cn-beijing.aliyuncs.com/upload/2022-02-20/aaf25ef453754afb9358a2a6c58defbb.jpg,https://petsuuu.oss-cn-beijing.aliyuncs.com/upload/2022-02-20/7fb44ccd809343caadfb2b2fa9a98bea.jpg',
+	'address_info': '广东省.广州市.番禺区',
+	'contact': '微信：15914922341，请备注领养'
+	}
 	petUploadNetworking(text)
 
 
