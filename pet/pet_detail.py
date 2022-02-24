@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 import json
 import time
@@ -19,5 +20,5 @@ def pet_detail_networking(topic_id):
 
 
 if __name__ == "__main__":
-	topic_id = 991
+	topic_id = 1012
 	pet_detail_networking(topic_id)

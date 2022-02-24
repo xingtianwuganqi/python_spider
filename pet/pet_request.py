@@ -344,12 +344,13 @@ def createMarkDown(dic):
 
 if __name__ == "__main__":
 	# zhaogouNetworking('北京市')
-	zhaogouNetworking('广州市')
+	# zhaogouNetworking('上海市')
+	# zhaogouNetworking('广州市')
 	# chongwubangNetworking('北京市')
 	# chongwubangNetworking('上海市')
 	# chongwubangNetworking('广州市')
 	# dechongNetworking('北京市')
-	# dechongNetworking('上海市')
+	dechongNetworking('上海市')
 	# dechongNetworking('广州市')
 	# dechongNetworking('昆明市')
 	# jiuzhuquan('北京市')
